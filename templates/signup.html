@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="static/form.css">
+        <title>
+        iMart
+        </title>
+    </head>
+    <main>
+        <div class="form-container">
+            <h1>Signup</h1>
+            <hr>
+            {% block content %}
+                <form action="" class="" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p}}
+                    <input type="submit" value="Submit" class="btn1">
+                    <a href="login">
+                        <input type="button" value="Login" class="btn2"></a>
+                    {% endblock %}
+                </form>
+            </div>
+        </main>
+    </body>
+</html>

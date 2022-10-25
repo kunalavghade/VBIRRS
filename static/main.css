@@ -1,0 +1,160 @@
+.top-box{
+	float: left;
+	width: 33.3%;
+	padding: 10px;
+	height: 180px;
+	box-sizing: border-box;	
+	text-align: center;
+}
+
+.company{
+	align-content: stretch;
+	width: 100%;
+	padding: 10px;
+	float: right;
+	box-sizing: border-box;	
+}
+
+.stats{
+	height: 100%;
+	float: right;
+	width: 70%;
+	border: 1px solid #ccc;
+	padding-top: 20px;
+	padding: 10px;
+	box-sizing: border-box;	
+}
+.company-info-stats{
+	float: right;
+	width: 30%;
+	padding: 10px;
+	box-sizing: border-box;	
+}
+
+.company-info,.company-stats{
+	float: left;
+	width: 100%;
+	border: 1px solid #ccc;
+	padding: 10px;
+	border-radius: 10px;
+	box-sizing: border-box;	
+}
+
+.News{
+	width: 100%;
+	border: 1px solid #ccc;
+	padding: 20px;
+	border-radius: 10px;
+}
+
+.News hr{
+	margin-left: 6%;
+	width: 88%;
+	border: 1px solid #666;
+}
+
+.greeting{
+	border: 2px solid #ccc;
+	padding: 10px;
+	height: 160px;
+	text-align: center;
+	border-radius: 10px;
+}
+
+.greeting h1{
+	padding-top: 20px;
+	font-family: sans-serif;
+	font-weight: bolder;
+	font-size: 35px;
+}
+
+.greeting h3{
+	padding-top: 20px;
+	font-family: sans-serif;
+	font-weight: bolder;
+	font-size: 30px;
+}
+
+.greeting li{
+	padding-top: 10px;
+	list-style: none;
+	font-family: sans-serif;
+	font-weight: bolder;
+	font-size: 20px;
+}
+
+.company-info h1, .company-stats h1{
+	margin-left: 5%;	
+	font-family: sans-serif;
+	font-weight: bolder;
+	font-size: 30px;
+}
+
+.stats h1{
+	text-align: center;	
+	font-family: sans-serif;
+	font-weight: bolder;
+	font-size: 30px;
+}
+
+.stats{
+	border: 1px solid #ccc;
+	padding: 10px;
+	margin-top: 10px;
+	border-radius: 10px;
+	box-sizing: border-box;	
+}
+.company-stats h2{
+	margin-left: 10%;	
+	font-family: sans-serif;
+	font-size: 24px;
+	justify-content: left;
+}
+
+.company-info input{
+	margin-left: 5%;
+	width: 90%;
+	border: none;
+	border-radius: 3px;
+}
+
+.even{
+	background: #32b768;
+    color: white;
+}
+
+.odd{
+	background: white;
+    color: #32b768;
+}
+
+.box{
+	padding: 10px;
+}
+
+.company-stats{
+	margin-bottom: 10px;
+}
+
+.News h1{
+	padding-left: 3%;
+	font-family: sans-serif;
+	font-weight: bolder;
+	font-size: 30px;
+}
+
+.News li{
+	padding-left: 5%;
+	font-family: sans-serif;
+}
+
+@media screen and (max-width: 800px) {
+  .top-box, .stats, .company-info-stats{
+    width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+  .company-info,.company-stats{
+  	width: 50%;
+  	height:350px;
+  	border-radius: 0px;
+  }
+}

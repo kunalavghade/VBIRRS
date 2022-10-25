@@ -1,0 +1,46 @@
+.contact-us {
+    max-width: 90%;
+    margin-left: 5%;
+}
+
+h1 {
+    margin-left: 5%;
+    margin-top: 30px;
+}
+
+h5{
+    margin-left: 2%;
+    margin-top: 20px;
+}
+
+p{
+    margin-left: 5%;
+    margin-top: 20px;
+}
+
+hr{
+    border-top: 1px solid;
+}
+
+.bottom{
+    position: absolute;
+    background-color: #222222;
+    height: 160px;
+    width: 100%;
+}
+
+.bottom i{
+    margin-top:70px;
+    width: 60px;
+}
+
+.bottom hr{
+    border-top: 3px solid #bbbbbb;
+    max-width: 16%;
+    margin-left: 42%;
+}
+
+.fa-linkedin{color: #EEEEEE;}
+.fa-instagram{color: #EEEEEE;}
+.fa-twitter{color: #EEEEEE;}
+.fa-github{color: #EEEEEE;}

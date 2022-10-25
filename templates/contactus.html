@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/nav.css">
+    <style>
+        .contact-us{
+            max-width: 90%;
+            margin-left: 5%;
+        } 
+        .heading{
+            margin-left: 5%;
+            margin-top: 30px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+    <!-------------------------------------Navigation Bar------------------------------------>
+    <div class="topnav" id="myTopnav">
+        <i><a href=".">VIBRRS</a></i>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars"></i></a>
+        <a href="." class="active">Home</a>
+        <a href="about">About</a>
+        <a href="main">Back</a>
+    </div>
+    <h1 class="heading">Contact Us</h1>
+    <div class="contact-us">
+        {% block content %}
+        <form method="POST" class="form-group" method="post">
+            {% csrf_token %}
+            {{ form.as_p}}
+            <input type="submit" value="Submit" class="btn1">
+            {% endblock %}
+        </form>
+    </div>
+
+    <script src="static/index.js"></script>
+</body>
+
+</html>

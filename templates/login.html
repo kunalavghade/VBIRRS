@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="static/form.css">
+        <title>
+        iMart
+        </title>
+    </head>
+    <body>
+        <main>
+            <div class="form-container">
+                <h1>Login</h1>
+                <hr>
+                {% block content %}
+                    <P class="error">
+                        {% if messages %}
+                            {% for msg in messages %}
+                                {{msg}}
+                            {% endfor %}
+                        {% endif %}
+                    </P>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p}}
+                        <input type="submit" value="Submit" class="btn1">
+                        <a href="signup">
+                            <input type="button" value="signup" class="btn2"></a>
+                        {% endblock %}
+                    </form>
+                </div>
+            </main>
+        </body>
+    </html>
