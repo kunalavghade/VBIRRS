@@ -1,0 +1,23 @@
+#cambtn,
+#capture,
+#stop {
+	border-radius: 0.25rem;
+	padding: 10px 15px;
+	border: 2px solid var(--slate-600);
+}
+#video-ctrl {
+	width: 350px;
+	height: 350px;
+}
+#video-ctrl video {
+	width: 100%;
+	/* height: 100%; */
+}
+#canvas-ctrl {
+	width: 350px;
+	height: 350px;
+}
+/* #canvas-ctrl canvas {
+	width: 100%;
+	height: 100%;
+} */

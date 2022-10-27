@@ -24,6 +24,7 @@
 		></script>
 
 		<script src="{% static '/jquery.min.js' %}"></script>
+		<script src="{% static '/index.js'%}"></script>
 		{% block styles %}{% endblock styles %}
 		<title>{{title}}</title>
 	</head>
@@ -76,17 +77,3 @@
 		</div>
 	</body>
 </html>
-<script defer>
-	$(document).ready(function () {
-		const nav = $("nav");
-		$(".nav-link.current").removeClass("current");
-
-		$(`.nav-link[href='${window.location.pathname}']`).addClass("current");
-		$("#open").click(function () {
-			nav.addClass("active");
-		});
-		$("#close").click(function () {
-			nav.removeClass("active");
-		});
-	});
-</script>

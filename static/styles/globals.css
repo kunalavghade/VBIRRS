@@ -13,6 +13,7 @@
 	--slate-700: #334155;
 	--slate-800: #1e293b;
 	--slate-900: #0f172a;
+	--btn-hover: #1e293b83;
 }
 html {
 	height: 100%;
@@ -38,7 +39,7 @@ input {
 	padding-block: 10px;
 	padding-inline: 15px;
 	color: var(--slate-400);
-	background-color: #1e293b83;
+	background-color: var(--btn-hover);
 	border-bottom: 2px solid var(--slate-500);
 	transition-property: border-color;
 	transition-duration: 0.5s;
@@ -51,7 +52,7 @@ textarea {
 	padding-block: 10px;
 	padding-inline: 15px;
 	color: var(--slate-400);
-	background-color: #1e293b83;
+	background-color: var(--btn-hover);
 	border-bottom: 2px solid var(--slate-500);
 	transition-property: border-color;
 	transition-duration: 0.5s;
@@ -97,9 +98,12 @@ button {
 	cursor: pointer;
 	border: none;
 	color: inherit;
-	transition-property: transform, box-shadow;
+	transition-property: transform, box-shadow, background-color;
 	transition-duration: 0.25s;
 	transition-timing-function: ease-in-out;
+}
+button:hover {
+	background-color: var(--btn-hover);
 }
 .iconbtn {
 	width: 45px;
@@ -151,7 +155,7 @@ nav.active {
 	transform: translateX(0px);
 }
 .brand {
-	color: inherit;
+	color: var(--slate-500);
 	position: relative;
 	width: fit-content;
 	height: fit-content;
@@ -162,6 +166,9 @@ nav.active {
 	text-transform: uppercase;
 	letter-spacing: 0.2rem;
 	text-align: center;
+}
+.brand:hover {
+	color: var(--slate-500);
 }
 .brand::before {
 	content: "";
@@ -187,6 +194,7 @@ nav.active {
 	transition-timing-function: ease-in-out;
 	transform: translateX(0px);
 }
+
 ul.link-items {
 	padding: 0px;
 	margin-top: auto;
@@ -246,7 +254,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-	background-color: #1e293b83;
+	background-color: var(--btn-hover);
 }
 .muted {
 	color: var(--slate-500);
@@ -290,7 +298,7 @@ a.link {
 	transition: color 0.25s ease-in-out;
 }
 a.link:hover {
-	color: var(--slate-400);
+	color: var(--slate-400) !important;
 }
 a.link::before {
 	content: "";
@@ -301,7 +309,6 @@ a.link::before {
 	transform: translateX(-50%);
 	height: 2px;
 	background-color: var(--purp-prim);
-
 	transition: width 0.25s ease-in-out;
 }
 a.link:hover::before {
