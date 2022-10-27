@@ -8,3 +8,4 @@ media
 migrations
 .vscode/
 .env-write.json
+.DS_Store
