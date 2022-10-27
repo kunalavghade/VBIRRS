@@ -6,3 +6,5 @@ local_setting.py
 db.sqlite3
 media
 migrations
+.vscode/
+.env-write.json
