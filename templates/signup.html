@@ -3,7 +3,7 @@
 {% block views %}
 <div class="form-container">
 	{% block content %}
-	<form action="" class="" method="post">
+	<form action="" id="signup" method="post">
 		<h1 class="title">Signup</h1>
 		{% csrf_token %} {% for fm in form %} {{fm}} {% endfor %}
 		<button type="submit">Submit</button>

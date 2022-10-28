@@ -7,7 +7,7 @@ from .forms import Signup, Login, ContactUsForm
 # from django.core.mail import send_mail, BadHeaderError
 from .models import UserInfo, ContactUs
 from django.http import JsonResponse
-from json import dumps
+from json import loads
 
 # import requests
 
@@ -18,33 +18,34 @@ def index(request):
 
 def signup(request):
     if request.method == "POST":
-        form = Signup(request.POST)
-        if form.is_valid():
-            firstName = form.cleaned_data["first_name"]
-            lastName = form.cleaned_data["last_name"]
-            email = form.cleaned_data["email_address"]
-            phone = form.cleaned_data["phone"]
-            password = form.cleaned_data["password"]
-            username = "".join([firstName, lastName])
-            if User.objects.filter(username=username).exists():
-                form = Signup()
-                return render(request, "signup.html", {"form": form})
-            else:
-                User.objects.create_user(
-                    username=username,
-                    password=password,
-                    first_name=firstName,
-                    last_name=lastName,
-                    email=email,
-                ).save()
-                UserInfo(
-                    firstName=firstName,
-                    lastName=lastName,
-                    email=email,
-                    phone=phone,
-                    password=password,
-                ).save()
-                return redirect("/login")
+        # form = Signup(request.POST)
+        data = loads(request.body)
+        form = Signup()
+        return JsonResponse({"msg": "Received"})
+    #     if form.is_valid():
+    #         fullName = form.cleaned_data["full_name"]
+    #         userName = form.cleaned_data["user_name"]
+    #         email = form.cleaned_data["email_address"]
+    #         phone = form.cleaned_data["phone"]
+    #         password = form.cleaned_data["password"]
+    #         if User.objects.filter(username=userName).exists():
+    #             form = Signup()
+    #             return JsonResponse({"err": "Username exists"}, status=422)
+    #         else:
+    #             User.objects.create_user(
+    #                 first_name=fullName,
+    #                 email=email,
+    #                 password=password,
+    #                 username=userName,
+    #             ).save()
+    #             UserInfo(
+    #                 fullName=fullName,
+    #                 userName=userName,
+    #                 email=email,
+    #                 phone=phone,
+    #                 password=password,
+    #             ).save()
+    #             return redirect("/login")
     form = Signup()
     return render(request, "signup.html", {"form": form})
 
