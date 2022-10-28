@@ -7,7 +7,6 @@ from .forms import Signup, Login, ContactUsForm
 # from django.core.mail import send_mail, BadHeaderError
 from .models import UserInfo, ContactUs
 from django.http import JsonResponse
-from json import loads
 
 # import requests
 
@@ -18,34 +17,32 @@ def index(request):
 
 def signup(request):
     if request.method == "POST":
-        # form = Signup(request.POST)
-        data = loads(request.body)
-        form = Signup()
-        return JsonResponse({"msg": "Received"})
-    #     if form.is_valid():
-    #         fullName = form.cleaned_data["full_name"]
-    #         userName = form.cleaned_data["user_name"]
-    #         email = form.cleaned_data["email_address"]
-    #         phone = form.cleaned_data["phone"]
-    #         password = form.cleaned_data["password"]
-    #         if User.objects.filter(username=userName).exists():
-    #             form = Signup()
-    #             return JsonResponse({"err": "Username exists"}, status=422)
-    #         else:
-    #             User.objects.create_user(
-    #                 first_name=fullName,
-    #                 email=email,
-    #                 password=password,
-    #                 username=userName,
-    #             ).save()
-    #             UserInfo(
-    #                 fullName=fullName,
-    #                 userName=userName,
-    #                 email=email,
-    #                 phone=phone,
-    #                 password=password,
-    #             ).save()
-    #             return redirect("/login")
+        form = Signup(request.POST)
+        if form.is_valid():
+            fullName = form.cleaned_data["full_name"]
+            userName = form.cleaned_data["user_name"]
+            email = form.cleaned_data["email_address"]
+            phone = form.cleaned_data["phone"]
+            password = form.cleaned_data["password"]
+            if User.objects.filter(username=userName).exists():
+                form = Signup()
+                messages.error(request, ("Username Taken"))
+                render(request, "signup.html", {"form": form}, status=422)
+            else:
+                User.objects.create_user(
+                    first_name=fullName,
+                    email=email,
+                    password=password,
+                    username=userName,
+                ).save()
+                UserInfo(
+                    fullName=fullName,
+                    userName=userName,
+                    email=email,
+                    phone=phone,
+                    password=password,
+                ).save()
+                return redirect("/login")
     form = Signup()
     return render(request, "signup.html", {"form": form})
 
@@ -67,11 +64,11 @@ def login(request):
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
             user = auth.authenticate(username=username, password=password)
-            if user is not None:
+            if user is not None and not user.is_staff:
                 auth.login(request, user)
                 return redirect("./main")
             else:
-                messages.success(request, ("Enter the correct username and password !"))
+                messages.error(request, ("Invalid Credentials!"))
                 return redirect("./login", {"form": form})
     else:
         form = Login()
@@ -94,7 +91,9 @@ def contact(request):
                 email_address=email_address,
                 your_name=your_name,
             ).save()
-            return redirect("/login")
+            messages.success(request, "We've received your message!Thank You!")
+            form = ContactUsForm()
+            return render(request, "contactus.html", {"form": form}, status=200)
     else:
         form = ContactUsForm()
         return render(request, "contactus.html", {"form": form})

@@ -3,6 +3,7 @@
 {% endblock styles %}
 <div class="form-container">
 	{% block content %}
+	<p class="text-success">{% if messages %}{% for msg in messages %}{{msg}}{% endfor %}{% endif %}</p>
 	<h1 class="title">Contact Us</h1>
 	<form method="POST" method="post">
 		{% csrf_token %} {% for fm in form %}{{ fm }}{% endfor %}

@@ -1,11 +1,7 @@
-{% extends 'base.html' %} {% block styles %} {% load static %}
-<link rel="stylesheet" href="{% static '/form.css' %}" /> {% endblock styles %}
-{% block views %}
+{% extends 'base.html' %} {% block styles %} {% load static %} <link rel="stylesheet" href="{% static '/form.css' %}" /> {% endblock styles %} {% block views %}
 
 <div class="form-container">
-	<p class="error">
-		{% if messages %} {% for msg in messages %} {{msg}} {% endfor %} {% endif %}
-	</p>
+	<p class="text-danger">{% if messages %} {% for msg in messages %} {{msg}} {% endfor %} {% endif %}</p>
 	<form action="" method="post">
 		<h1 class="title">Login</h1>
 		{% csrf_token %} {% for fm in form %} {{fm}} {% endfor %}

@@ -1,7 +1,7 @@
 // Jquery for convenience
 $(function () {
 	// Global ajax setup
-	$.ajaxSetup({});
+
 	console.log("Loaded");
 	const nav = $("nav");
 	const canvas = $("#canvas-ctrl canvas")[0];
@@ -41,8 +41,7 @@ $(function () {
 		videoTag.addEventListener("canplay", (ev) => {
 			if (!streaming) {
 				width = videoTag.offsetWidth;
-				height =
-					(videoTag.videoHeight / videoTag.videoWidth) * videoTag.offsetWidth;
+				height = (videoTag.videoHeight / videoTag.videoWidth) * videoTag.offsetWidth;
 
 				videoTag.setAttribute("width", width);
 				videoTag.setAttribute("height", height);
@@ -83,28 +82,4 @@ $(function () {
 		}
 		return "";
 	}
-	$("#signup").on("submit", function (e) {
-		e.preventDefault();
-		console.log();
-		const data = {};
-		$.each($("#signup input"), (idx, el) => {
-			data[$(el).attr("name")] = $(el).val();
-		});
-		console.log(data);
-		console.log(document.cookie);
-		$.ajax({
-			url: "/signup",
-			method: "post",
-			contentType: "application/json",
-			headers: { "X-CSRFToken": getCookie("csrftoken") },
-			xhrFields: {
-				withCredentials: true,
-			},
-			data: JSON.stringify(data),
-
-			success: function (resp, respStatus, jqXhr) {
-				console.log(resp);
-			},
-		});
-	});
 });
