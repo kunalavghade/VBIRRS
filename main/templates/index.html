@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% block styles %} {% load static %}
+<link rel="stylesheet" href="{% static '/main.css'%}" />
+{% endblock styles %} {% block views %}
+<h1 class="title">Home</h1>
+<!- Don't render the image options until user has logged in ->
+{% if user.is_authenticated %}
+
+<button id="cambtn">Open Cam</button>
+<button id="capture">Capture</button>
+<button id="stop">Stop Cam</button>
+<div id="video-ctrl">
+	<video></video>
+</div>
+<div id="canvas-ctrl"><canvas></canvas></div>
+{% endif %} {% endblock views %}

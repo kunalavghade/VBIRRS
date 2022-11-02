@@ -3,36 +3,131 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from .forms import Signup, Login, ContactUsForm
-
-# from django.core.mail import send_mail, BadHeaderError
 from .models import UserInfo, ContactUs
 from django.http import JsonResponse
+import sys
+sys.path.insert(0, './Yolo/')
 
-# import requests
+import time
+from pathlib import Path
+import cv2
+import torch
+import numpy as np
+from numpy import random
+from models.experimental import attempt_load
+from utils.general import check_img_size, check_requirements, check_imshow, non_max_suppression, apply_classifier, \
+    scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path
+from utils.plots import plot_one_box
+
 
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
-serviceAccountKey = {
-  "type": "service_account",
-  "project_id": "database-1c96e",
-  "private_key_id": "56ab78de64e3acb4b69d06b29a78866189c1ff14",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQChGOxbapyRort5\nHjLo23BFKF428HV/eH/CQh38sp1I7t3imJdK554b6Ekzou9qPdPZ2BoTQMtBnHbN\nCycc+kqVg+759lrKh+vdFSHdErl2//AP2LHXQ43CCGjp9KmkEBbFxQPhbiKj3mQF\no531qDPohM2BaXrNcEZqrur7y2X1WQs0L7AitlT6XLFKJFgUuOjG50QfqIyR02LM\ngYq1l8s22YhlVLJF2g+qwDsGkfuAO63obYpNSI4BjAJFprA7MDIojATuFHV7RfZ2\nFhulr0BY/a5yentTne4/F4679cLECHL1gsRaE3o7tTwONnLwiTcnjw1suhuYXFYy\n9A1U7tyLAgMBAAECggEAFrvDUZyNibO9jE2pq4ND/aPBCom2Ww2wdxkIzZ87Djlp\n0HnuEmD1xpm/XW0R0hv1fcQUMewD2Ddx6w+MLnes92/N1TJhr5ECGjR1jz1UNNR7\nQRE4T4NgntARq2pJAjZPBbZUDNzo6y0NT7UTgRYtH76V7ZGVWyZhRC7OSZ1zaZg0\nuxdYk2pMzoLMdt1YwPOER99bLwjGcmwn64sS+s1lPLbQEw0qB3w+QCiMiZFLLLL4\n/m7Oo+jzopX7q0S0EPfQkIKC+2SQqtmP9TYU1bkxYGU0EA9LQcelgFGzsStdzT2i\nOf72dYYpK9iwW8kiWN/DPb4zhu5ZOLT2bY3qMb7FOQKBgQDb1uW1ARbBhDer08EZ\nyRoXdwBTzQp6FT1QVTgbhBKkydskDOKYH4nFGOfk/0Xe8369sypjOfzlqRIlYDeC\nTHTyfZ2WYqFhFG015NggFe/xJ75uTBTdTDB6t7EgmG2MyUSz0mAb4ZGrHVncyyfx\nwVtc+VZQk9dssbNZ/1KjXH7mRwKBgQC7mHyQEbN//SBfJdxR5O+jhHypcw0WBjm4\nTyQNDOp4LqMUTlXuI0xSYgvNhc/VHYpt+k7ZrciMARIxFamDA3excdeu4u7WmQjb\neFG3uxguEeyXuW0/lvttRiazJnbwXUSfxFCMnEpMn1ymI5RPLKEjmBjeqPug5KAF\nqdOiNWHFnQKBgQDAst/rBydRPXonDZhH5/UM+Gy7CBHU7WUvU2O5Cs3k0GNceEbv\nHUYAFFLAcdpnEXzY/4F6NMwu60JSrMI7XpVsMRu/RHk8xVDtWsjvZwtJkZLkz5/C\nUxRznSyP68yrCYlFLnS8O78aBMJOPW2oBdr15kD4pH7CcglKK/nd5Cf/5QKBgFC+\nYV7hP5FnMffCJAJbt4l6DO4iRw+jvlRGPA4h8QmpiSfET9gf+Um8Sbg8UCg6fsq3\nYhjvY9Je46Wc3Uk2xN3rUhpEMujLFbThJMsgDFhH/r2PYiZspetytlWFyMvMWS0r\nIkBjRNeWABrCVaN+Yh0f6hRsR2IJBZdqcVzv/RVBAoGAKjO/fVzp7JjRjfZ+37Nt\nBOOmAJ51s+4TDjZnIp/qW4RDp/40x2Q6rgNuKsWwc4jF+sPdgtbB42HBXWlyMJVf\njiDJMBCnup1nEpiChn5eFzkhn6UBM40mRvDi76s+Wrl+ZYNsosM3SFiG3o8wUAzo\nXRFbPPmrGZs5gmhsme+Klxc=\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-wgvlo@database-1c96e.iam.gserviceaccount.com",
-  "client_id": "100774660557246534195",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-wgvlo%40database-1c96e.iam.gserviceaccount.com"
-}
+
 
 if not firebase_admin._apps:
-    cred = credentials.Certificate(serviceAccountKey)
+    cred = credentials.Certificate("./FireBase/serviceAccountKey.json")
     firebase_admin.initialize_app(cred, {
     'databaseURL' : 'https://database-1c96e-default-rtdb.firebaseio.com/'
     })
-database = db.reference('/')
+    database = db.reference('/')
+
+yolo = None
+names = None
+half = False
+names = None
+colors = None
+imgsz = None
+device = None
+with torch.no_grad():
+    weights = './Yolo/best.pt'
+    device = torch.device('cpu')
+    yolo  = attempt_load(weights, map_location= device)
+    stride = int(yolo.stride.max())
+    imgsz =  check_img_size(640, s = stride)
+    names = yolo.module.names if hasattr(yolo, 'module') else yolo.names
+    colors = [[random.randint(0, 255) for _ in range(3)] for _ in names],
+    if device.type != 'cpu':
+        yolo(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(yolo.parameters())))
+
+def time_synchronized():
+    # pytorch-accurate time
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+    return time.time()
+
+
+def detect():
+    nn = set()
+    with torch.no_grad():
+        img0 = cv2.imread('./Yolo/Data.jpg')
+        img = letterbox(img0, 640, stride=2)[0]
+        img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
+        img = np.ascontiguousarray(img)
+        img = torch.from_numpy(img).to(device)
+        img = img.half() if half else img.float()  # uint8 to fp16/32
+        img /= 255.0  # 0 - 255 to 0.0 - 1.0
+        if img.ndimension() == 3:
+            img = img.unsqueeze(0)
+
+        t1 = time_synchronized()
+        pred = yolo(img, augment= False)[0]
+
+        pred = non_max_suppression(pred, 0.25, 0.45, agnostic= False)
+        t2 = time_synchronized()
+        for i, det in enumerate(pred):
+            s = ''
+            s += '%gx%g ' % img.shape[2:]  # print string
+            gn = torch.tensor(img0.shape)[[1, 0, 1, 0]]
+            if len(det):
+                det[:, :4] = scale_coords(img.shape[2:], det[:, :4], img0.shape).round()
+
+            for c in det[:, -1].unique():
+                n = (det[:, -1] == c).sum()  # detections per class
+                s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
+        
+            for *xyxy, conf, cls in reversed(det):
+                nn.add(names[int(cls)])
+                label = f'{names[int(cls)]} {conf:.2f}'
+                plot_one_box(xyxy, img0, label=label, line_thickness=1)
+
+        cv2.imwrite("./Yolo.filename.jpg", img0)
+    return nn
+
+
+
+def letterbox(img, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleFill=False, scaleup=True, stride=32):
+    # Resize and pad image while meeting stride-multiple constraints
+    shape = img.shape[:2]  # current shape [height, width]
+    if isinstance(new_shape, int):
+        new_shape = (new_shape, new_shape)
+
+    # Scale ratio (new / old)
+    r = min(new_shape[0] / shape[0], new_shape[1] / shape[1])
+    if not scaleup:  # only scale down, do not scale up (for better test mAP)
+        r = min(r, 1.0)
+
+    # Compute padding
+    ratio = r, r  # width, height ratios
+    new_unpad = int(round(shape[1] * r)), int(round(shape[0] * r))
+    dw, dh = new_shape[1] - new_unpad[0], new_shape[0] - new_unpad[1]  # wh padding
+    if auto:  # minimum rectangle
+        dw, dh = np.mod(dw, stride), np.mod(dh, stride)  # wh padding
+    elif scaleFill:  # stretch
+        dw, dh = 0.0, 0.0
+        new_unpad = (new_shape[1], new_shape[0])
+        ratio = new_shape[1] / shape[1], new_shape[0] / shape[0]  # width, height ratios
+
+    dw /= 2  # divide padding into 2 sides
+    dh /= 2
+
+    if shape[::-1] != new_unpad:  # resize
+        img = cv2.resize(img, new_unpad, interpolation=cv2.INTER_LINEAR)
+    top, bottom = int(round(dh - 0.1)), int(round(dh + 0.1))
+    left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
+    img = cv2.copyMakeBorder(img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)  # add border
+    return img, ratio, (dw, dh)
 
 def index(request):
     return render(request, "index.html", {"title": "Home"})
@@ -76,6 +171,7 @@ def signup(request):
 
 @login_required(login_url="/login")
 def main(request):
+    print(detect())
     return render(request, "index.html")
 
 

@@ -1,0 +1,11 @@
+names:
+- Garlic
+- Green Chili
+- Onion
+- Potato
+- Sponge Gourd
+- Tomato
+- cucumber
+nc: 7
+train: Test-4/train/images
+val: Test-4/valid/images
