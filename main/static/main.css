@@ -17,6 +17,12 @@
 	width: 350px;
 	height: 350px;
 }
+
+#submit-style{
+	background-color: red;
+	height: 150px;
+	width: 150px;
+}
 /* #canvas-ctrl canvas {
 	width: 100%;
 	height: 100%;

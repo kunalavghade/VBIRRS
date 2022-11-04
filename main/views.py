@@ -5,19 +5,26 @@ from django.contrib import messages
 from .forms import Signup, Login, ContactUsForm
 from .models import UserInfo, ContactUs
 from django.http import JsonResponse
-import sys
-sys.path.insert(0, './Yolo/')
 
-import time
-from pathlib import Path
-import cv2
-import torch
-import numpy as np
-from numpy import random
-from models.experimental import attempt_load
-from utils.general import check_img_size, check_requirements, check_imshow, non_max_suppression, apply_classifier, \
-    scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path
-from utils.plots import plot_one_box
+from django.core.files.temp import NamedTemporaryFile
+from urllib.request import urlopen
+from django.core.files import File
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+
+# import sys
+# sys.path.insert(0, './Yolo/')
+
+# import time
+# from pathlib import Path
+# import cv2
+# import torch
+# import numpy as np
+# from numpy import random
+# from models.experimental import attempt_load
+# from utils.general import check_img_size, check_requirements, check_imshow, non_max_suppression, apply_classifier, \
+#     scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path
+# from utils.plots import plot_one_box
 
 
 import firebase_admin
@@ -33,35 +40,34 @@ if not firebase_admin._apps:
     })
     database = db.reference('/')
 
-yolo = None
-names = None
-half = False
-names = None
-colors = None
-imgsz = None
-device = None
-with torch.no_grad():
-    weights = './Yolo/best.pt'
-    device = torch.device('cpu')
-    yolo  = attempt_load(weights, map_location= device)
-    stride = int(yolo.stride.max())
-    imgsz =  check_img_size(640, s = stride)
-    names = yolo.module.names if hasattr(yolo, 'module') else yolo.names
-    colors = [[random.randint(0, 255) for _ in range(3)] for _ in names],
-    if device.type != 'cpu':
-        yolo(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(yolo.parameters())))
+# yolo = None
+# names = None
+# half = False
+# names = None
+# colors = None
+# imgsz = None
+# device = None
+# with torch.no_grad():
+#     weights = './Yolo/best.pt'
+#     device = torch.device('cpu')
+#     yolo  = attempt_load(weights, map_location= device)
+#     stride = int(yolo.stride.max())
+#     imgsz =  check_img_size(640, s = stride)
+#     names = yolo.module.names if hasattr(yolo, 'module') else yolo.names
+#     colors = [[random.randint(0, 255) for _ in range(3)] for _ in names],
+#     if device.type != 'cpu':
+#         yolo(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(yolo.parameters())))
 
 def time_synchronized():
-    # pytorch-accurate time
     if torch.cuda.is_available():
         torch.cuda.synchronize()
     return time.time()
 
 
-def detect():
+def detect(image):
     nn = set()
     with torch.no_grad():
-        img0 = cv2.imread('./Yolo/Data.jpg')
+        img0 = cv2.imread(image)
         img = letterbox(img0, 640, stride=2)[0]
         img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
         img = np.ascontiguousarray(img)
@@ -92,7 +98,7 @@ def detect():
                 label = f'{names[int(cls)]} {conf:.2f}'
                 plot_one_box(xyxy, img0, label=label, line_thickness=1)
 
-        cv2.imwrite("./Yolo.filename.jpg", img0)
+        cv2.imwrite("./Yolofilename.jpg", img0)
     return nn
 
 
@@ -169,9 +175,12 @@ def signup(request):
     return render(request, "signup.html", {"form": form})
 
 
-@login_required(login_url="/login")
+# @login_required(login_url="/login")
 def main(request):
-    print(detect())
+    if request.method == 'POST':
+        image_path = request.POST["src"]
+        default_storage.save('./Yolo/cam.jpg', ContentFile(urlopen(image_path).read()))
+    # print(detect())
     return render(request, "index.html")
 
 

@@ -56,6 +56,7 @@ $(function () {
 	$("#capture").on("click", function () {
 		const context = canvas.getContext("2d");
 		context.drawImage(videoTag, 0, 0, canvas.width, canvas.height);
+		document.getElementById('webimg').setAttribute('value',canvas.toDataURL('image/png'))
 	});
 	// Stops the video stream and generates the image file which would be able to download
 	// To do: Look for another option such as sending the image using ajax
@@ -63,10 +64,11 @@ $(function () {
 		videoTag.pause();
 		videoTag.srcObject = null;
 		localStream.getTracks()[0].stop();
-		const a = document.createElement("a");
-		a.download = "file.png";
-		a.href = canvas.toDataURL();
-		a.on("click");
+		// const a = document.createElement("a");
+		// a.download = "file.png";
+		// a.href = canvas.toDataURL();
+		
+		// a.on("click");
 		canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
 	});
 	// ajax calls
