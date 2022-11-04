@@ -6,9 +6,9 @@ from .forms import Signup, Login, ContactUsForm
 from .models import UserInfo, ContactUs
 from django.http import JsonResponse
 
-from django.core.files.temp import NamedTemporaryFile
+# from django.core.files.temp import NamedTemporaryFile
 from urllib.request import urlopen
-from django.core.files import File
+# from django.core.files import File
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 
@@ -17,7 +17,7 @@ from django.core.files.base import ContentFile
 
 # import time
 # from pathlib import Path
-# import cv2
+import cv2
 # import torch
 # import numpy as np
 # from numpy import random
@@ -180,7 +180,6 @@ def main(request):
     if request.method == 'POST':
         image_path = request.POST["src"]
         default_storage.save('./Yolo/cam.jpg', ContentFile(urlopen(image_path).read()))
-    # print(detect())
     return render(request, "index.html")
 
 
