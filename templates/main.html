@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block styles %} {% load static %}
+<link rel="stylesheet" href="{% static 'main.css'%}" />
+<link rel="stylesheet" href="{% static 'form.css' %}" />
+{% endblock styles %} {% block views %} {% if user.is_authenticated %}
+<h1 class="title">Main</h1>
+<div class="form-container">
+	{% if messages %} {% for msg in messages %} {% if msg.tags == 'error' %}
+	<p class="text-danger">{{msg}}</p>
+	{% else %}
+	<p class="text-success">{{msg}}</p>
+
+	{% endif %} {% endfor %} {% endif %}
+
+	<form action="" id="image-form" method="POST" enctype="multipart/form-data">
+		{% csrf_token %} {% for fm in form %} {{fm}} {% endfor %}
+		<button id="cambtn" type="button">Open Cam</button>
+		<button id="capture" type="button">Capture</button>
+		<button id="stop" type="submit">Stop Cam</button>
+		<div id="video-ctrl">
+			<video></video>
+		</div>
+		<div id="canvas-ctrl"><canvas></canvas></div>
+	</form>
+</div>
+{% endif %} {% endblock views %}

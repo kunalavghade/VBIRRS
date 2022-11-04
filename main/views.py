@@ -2,7 +2,8 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-from .forms import Signup, Login, ContactUsForm
+from .forms import Signup, Login, ContactUsForm, ImageForm
+from django.core.files.storage import FileSystemStorage
 
 # from django.core.mail import send_mail, BadHeaderError
 from .models import UserInfo, ContactUs
@@ -12,6 +13,8 @@ from django.http import JsonResponse
 
 
 def index(request):
+    if request.method == "POST":
+        data = request.body
     return render(request, "index.html", {"title": "Home"})
 
 
@@ -49,7 +52,24 @@ def signup(request):
 
 @login_required(login_url="/login")
 def main(request):
-    return render(request, "index.html")
+    if request.method == "POST":
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            usr = form.cleaned_data["user"]
+            image = request.FILES["image_file"]
+
+            print(image, usr)
+            print("done")
+            form = ImageForm()
+            messages.success(request, "Uploaded")
+            render(request, "main.html", {"form": form}, status=200)
+
+        # else:
+        #     print(form.errors)
+        #     messages.error(request, "Failed")
+        #     return render(request, "index.html", {"form": form})
+    form = ImageForm(initial={"user": request.user})
+    return render(request, "main.html", {"form": form})
 
 
 def logout(request):

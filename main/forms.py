@@ -54,3 +54,8 @@ class ContactUsForm(forms.Form):
         max_length=1024,
         widget=forms.Textarea(attrs={"placeholder": "Message", "rows": 3}),
     )
+
+
+class ImageForm(forms.Form):
+    user = forms.CharField(widget=forms.HiddenInput())
+    image_file = forms.FileField(widget=forms.FileInput(attrs={"accept": "image/*"}))
