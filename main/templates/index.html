@@ -9,21 +9,17 @@
 <!- Don't render the image options until user has logged in ->
 {% if user.is_authenticated %}
 
-
-<form method="POST" name="inputForm" enctype='multipart/form-data'>
+<form method="POST" name="inputForm" enctype="multipart/form-data">
 	{% csrf_token %}
-	<input id="cambtn" type = "button" value="Open Cam"></input>
-<input type = "button" value="Capture" id="capture"></input>
-<input type = "button" value="Stop Cam" id="stop"></input>
-<button type="submit" class="button" id="submit">Submit</button>
-<div id="video-ctrl">
-	<video></video>
-</div>
-<input id="webimg" value="" name="src" type="text" style="display: none;">
-<div id="canvas-ctrl"><canvas></canvas></div>
-
+	<button id="cambtn" type="button">Open Cam</button>
+	<button type="button" id="capture">Capture</button>
+	<button type="button" id="stop">Stop Cam</button>
+	<button type="submit" class="button" id="submit">Submit</button>
+	<div id="video-ctrl">
+		<video></video>
+	</div>
+	<input id="webimg" value="" name="src" type="text" style="display: none" />
+	<div id="canvas-ctrl"><canvas></canvas></div>
 </form>
-
-
 
 {% endif %} {% endblock views %}

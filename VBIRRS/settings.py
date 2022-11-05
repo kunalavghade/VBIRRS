@@ -121,11 +121,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "main/static")]
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
+DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
 MEDIA_URL = "/media/"
 
 # Default primary key field type

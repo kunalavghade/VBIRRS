@@ -1,7 +1,11 @@
 // Jquery for convenience
 $(function () {
 	// Global ajax setup
-
+	$.ajaxSetup({
+		headers: {
+			"X-CSRFToken": getCookie("csrftoken"),
+		},
+	});
 	console.log("Loaded");
 	const nav = $("nav");
 	const canvas = $("#canvas-ctrl canvas")[0];
@@ -24,7 +28,7 @@ $(function () {
 		navigator.mediaDevices
 			// Streams an hd video
 			.getUserMedia({
-				video: { width: { ideal: 4096 }, height: { ideal: 2160 } },
+				video: { width: { ideal: 1920 } },
 				audio: false,
 			}) // Recieves a media stream if we have access to camera
 			.then((stream) => {
@@ -32,8 +36,8 @@ $(function () {
 				// This will be our viewer or helper for the stream
 				videoTag.srcObject = stream;
 				localStream = stream;
-				videoTag.play();
-			}) // If there's any error we will log this (Todo alert the user instead of logging)
+			})
+			// If there's any error we will log this (Todo alert the user instead of logging)
 			.catch((err) => {
 				console.error(`An error occurred: ${err}`);
 			});
@@ -41,12 +45,16 @@ $(function () {
 		videoTag.addEventListener("canplay", (ev) => {
 			if (!streaming) {
 				width = videoTag.offsetWidth;
-				height = (videoTag.videoHeight / videoTag.videoWidth) * videoTag.offsetWidth;
+				height =
+					(videoTag.videoHeight / videoTag.videoWidth) * videoTag.offsetWidth;
 
 				videoTag.setAttribute("width", width);
 				videoTag.setAttribute("height", height);
 				canvas.setAttribute("width", width);
 				canvas.setAttribute("height", height);
+				console.log(width, height);
+				videoTag.play();
+
 				streaming = true;
 			}
 		});
@@ -55,8 +63,14 @@ $(function () {
 	// This canvas will be scaled down (css transform) but the aspect ratio will be maintained
 	$("#capture").on("click", function () {
 		const context = canvas.getContext("2d");
+		canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+		canvas.setAttribute("width", width * 0.45);
+		canvas.setAttribute("height", height * 0.5);
 		context.drawImage(videoTag, 0, 0, canvas.width, canvas.height);
-		document.getElementById('webimg').setAttribute('value',canvas.toDataURL('image/png'))
+		console.log(canvas.width, canvas.height);
+		document
+			.getElementById("webimg")
+			.setAttribute("value", canvas.toDataURL("image/png"));
 	});
 	// Stops the video stream and generates the image file which would be able to download
 	// To do: Look for another option such as sending the image using ajax
@@ -67,10 +81,11 @@ $(function () {
 		// const a = document.createElement("a");
 		// a.download = "file.png";
 		// a.href = canvas.toDataURL();
-		
+
 		// a.on("click");
 		canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
 	});
+
 	// ajax calls
 	function getCookie(c_name) {
 		if (document.cookie.length > 0) {
@@ -84,4 +99,26 @@ $(function () {
 		}
 		return "";
 	}
+	$("form[name='inputForm']").on("submit", function (evt) {
+		evt.preventDefault();
+		const form = new FormData($(this)[0]);
+		$.ajax({
+			url: "/main",
+			method: "POST",
+			data: form,
+			processData: false,
+			contentType: false,
+			cache: false,
+			success: function (data) {
+				console.log("success");
+				console.log(data);
+			},
+			error: function (data) {
+				console.log("error");
+				console.log(data);
+			},
+		});
+		console.log(form);
+		console.log("Form Submitting..");
+	});
 });

@@ -5,9 +5,11 @@ from django.contrib import messages
 from .forms import Signup, Login, ContactUsForm
 from .models import UserInfo, ContactUs
 from django.http import JsonResponse
+import time
 
 # from django.core.files.temp import NamedTemporaryFile
 from urllib.request import urlopen
+
 # from django.core.files import File
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -18,6 +20,7 @@ from django.core.files.base import ContentFile
 # import time
 # from pathlib import Path
 import cv2
+
 # import torch
 # import numpy as np
 # from numpy import random
@@ -32,13 +35,12 @@ from firebase_admin import credentials
 from firebase_admin import db
 
 
-
 if not firebase_admin._apps:
     cred = credentials.Certificate("./FireBase/serviceAccountKey.json")
-    firebase_admin.initialize_app(cred, {
-    'databaseURL' : 'https://database-1c96e-default-rtdb.firebaseio.com/'
-    })
-    database = db.reference('/')
+    firebase_admin.initialize_app(
+        cred, {"databaseURL": "https://database-1c96e-default-rtdb.firebaseio.com/"}
+    )
+    database = db.reference("/")
 
 # yolo = None
 # names = None
@@ -57,6 +59,7 @@ if not firebase_admin._apps:
 #     colors = [[random.randint(0, 255) for _ in range(3)] for _ in names],
 #     if device.type != 'cpu':
 #         yolo(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(yolo.parameters())))
+
 
 def time_synchronized():
     if torch.cuda.is_available():
@@ -78,13 +81,13 @@ def detect(image):
             img = img.unsqueeze(0)
 
         t1 = time_synchronized()
-        pred = yolo(img, augment= False)[0]
+        pred = yolo(img, augment=False)[0]
 
-        pred = non_max_suppression(pred, 0.25, 0.45, agnostic= False)
+        pred = non_max_suppression(pred, 0.25, 0.45, agnostic=False)
         t2 = time_synchronized()
         for i, det in enumerate(pred):
-            s = ''
-            s += '%gx%g ' % img.shape[2:]  # print string
+            s = ""
+            s += "%gx%g " % img.shape[2:]  # print string
             gn = torch.tensor(img0.shape)[[1, 0, 1, 0]]
             if len(det):
                 det[:, :4] = scale_coords(img.shape[2:], det[:, :4], img0.shape).round()
@@ -92,18 +95,25 @@ def detect(image):
             for c in det[:, -1].unique():
                 n = (det[:, -1] == c).sum()  # detections per class
                 s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
-        
+
             for *xyxy, conf, cls in reversed(det):
                 nn.add(names[int(cls)])
-                label = f'{names[int(cls)]} {conf:.2f}'
+                label = f"{names[int(cls)]} {conf:.2f}"
                 plot_one_box(xyxy, img0, label=label, line_thickness=1)
 
         cv2.imwrite("./Yolofilename.jpg", img0)
     return nn
 
 
-
-def letterbox(img, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleFill=False, scaleup=True, stride=32):
+def letterbox(
+    img,
+    new_shape=(640, 640),
+    color=(114, 114, 114),
+    auto=True,
+    scaleFill=False,
+    scaleup=True,
+    stride=32,
+):
     # Resize and pad image while meeting stride-multiple constraints
     shape = img.shape[:2]  # current shape [height, width]
     if isinstance(new_shape, int):
@@ -132,8 +142,11 @@ def letterbox(img, new_shape=(640, 640), color=(114, 114, 114), auto=True, scale
         img = cv2.resize(img, new_unpad, interpolation=cv2.INTER_LINEAR)
     top, bottom = int(round(dh - 0.1)), int(round(dh + 0.1))
     left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
-    img = cv2.copyMakeBorder(img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)  # add border
+    img = cv2.copyMakeBorder(
+        img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color
+    )  # add border
     return img, ratio, (dw, dh)
+
 
 def index(request):
     return render(request, "index.html", {"title": "Home"})
@@ -166,10 +179,8 @@ def signup(request):
                     phone=phone,
                     password=password,
                 ).save()
-                user_ref = database.child('users')
-                user_ref.update({
-                    userName : ['None']
-                    })
+                user_ref = database.child("users")
+                user_ref.update({userName: ["None"]})
                 return redirect("/login")
     form = Signup()
     return render(request, "signup.html", {"form": form})
@@ -177,9 +188,11 @@ def signup(request):
 
 # @login_required(login_url="/login")
 def main(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         image_path = request.POST["src"]
-        default_storage.save('./Yolo/cam.jpg', ContentFile(urlopen(image_path).read()))
+        default_storage.save("./Yolo/cam.jpg", ContentFile(urlopen(image_path).read()))
+        time.sleep(10)
+        return JsonResponse({"msg": "Received"})
     return render(request, "index.html")
 
 

@@ -6,19 +6,19 @@
 	border: 2px solid var(--slate-600);
 }
 #video-ctrl {
-	width: 350px;
-	height: 350px;
+	width: 1920px;
+	aspect-ratio: 1/1;
 }
 #video-ctrl video {
 	width: 100%;
-	/* height: 100%; */
+	height: 100%;
 }
 #canvas-ctrl {
 	width: 350px;
 	height: 350px;
 }
 
-#submit-style{
+#submit-style {
 	background-color: red;
 	height: 150px;
 	width: 150px;

@@ -192,7 +192,6 @@ nav.active {
 	color: var(--slate-400);
 	transition-duration: 0.5s;
 	transition-timing-function: ease-in-out;
-	transform: translateX(0px);
 }
 
 ul.link-items {
@@ -236,9 +235,7 @@ ul.link-items {
 	width: 3px;
 }
 /* When nav active slide the container out of view */
-nav.active ~ .css-container {
-	transform: translateX(200px);
-}
+
 .title {
 	font-size: clamp(3rem, -0.875rem + 8.333vw, 4rem);
 	color: var(--slate-500);
