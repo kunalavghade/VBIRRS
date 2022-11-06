@@ -191,8 +191,16 @@ def main(request):
     if request.method == "POST":
         image_path = request.POST["src"]
         default_storage.save("./Yolo/cam.jpg", ContentFile(urlopen(image_path).read()))
+        # we already get image
+        # purposely introduced to simulate time delay for processing
+        # instead of making another route call detect function here
         time.sleep(10)
-        return JsonResponse({"msg": "Received"})
+        return JsonResponse(
+            {
+                "msg": "Received",
+                "veggies": ["Cabbage", "Caulifloweer", "Onion", "Tomato", "Garlic"],
+            }
+        )
     return render(request, "index.html")
 
 

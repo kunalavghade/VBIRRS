@@ -1,25 +1,55 @@
 {% extends 'base.html' %} {% block styles %} {% load static %}
 <link rel="stylesheet" href="{% static '/main.css'%}" />
+<link rel="stylesheet" href="{% static '/loader.css' %}" />
 <!-- <link rel="stylesheet" href="{% static 'styles/cam.css'%}" /> -->
 <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all"> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="module" src="{% static 'index.js' %}"></script>
 {% endblock styles %} {% block views %}
 <h1 class="title">Home</h1>
-<!- Don't render the image options until user has logged in ->
 {% if user.is_authenticated %}
 
 <form method="POST" name="inputForm" enctype="multipart/form-data">
 	{% csrf_token %}
 	<button id="cambtn" type="button">Open Cam</button>
-	<button type="button" id="capture">Capture</button>
-	<button type="button" id="stop">Stop Cam</button>
+
 	<button type="submit" class="button" id="submit">Submit</button>
-	<div id="video-ctrl">
-		<video></video>
+	<div class="video-wrapper">
+		<button type="button" class="iconbtn" style="color: white" id="capture">
+			<i class="bi bi-camera"></i>
+		</button>
+		<button type="button" class="iconbtn" id="stop">
+			<i class="bi bi-x-lg"></i>
+		</button>
+		<div id="video-ctrl">
+			<video></video>
+		</div>
+		<div id="canvas-ctrl"><canvas></canvas></div>
 	</div>
 	<input id="webimg" value="" name="src" type="text" style="display: none" />
-	<div id="canvas-ctrl"><canvas></canvas></div>
 </form>
+<div class="wrapper">
+	<div class="press">
+		<div class="holder"></div>
+		<div class="lid"></div>
+		<div class="carafe">
+			<div class="drop"></div>
+			<div class="spout"></div>
+			<div class="contents">
+				<div class="grounds"></div>
+				<div class="water"></div>
+			</div>
+		</div>
+		<div class="plunger">
+			<div class="shaft">
+				<div class="knob"></div>
+			</div>
+			<div class="filter"></div>
+		</div>
+	</div>
+</div>
+{% comment %} renderde list after ajax call {% endcomment %}
+
+<ul id="resp" class="vegetables mt-4"></ul>
 
 {% endif %} {% endblock views %}

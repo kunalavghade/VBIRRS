@@ -1,11 +1,48 @@
-#cambtn,
-#capture,
+#capture {
+	position: absolute;
+	z-index: 4;
+	bottom: 10%;
+	background-color: #46639383;
+}
 #stop {
+	position: absolute;
+	top: 25px;
+	right: 25px;
+	z-index: 2;
+}
+#cambtn {
 	border-radius: 0.25rem;
 	padding: 10px 15px;
 	border: 2px solid var(--slate-600);
 }
+.video-wrapper {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	top: 0px;
+	left: 0px;
+	z-index: 4;
+	transform: translateY(-100%);
+	opacity: 0;
+	visibility: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	transition-property: transform, backdrop-filter;
+	transition-duration: 0.5s;
+	transition-timing-function: ease-in-out;
+}
+.video-wrapper.viewing {
+	transform: translateY(0%);
+	opacity: 1;
+	visibility: visible;
+	backdrop-filter: blur(15px);
+	-webkit-backdrop-filter: blur(15px);
+}
+
 #video-ctrl {
+	z-index: 1;
 	width: 1920px;
 	aspect-ratio: 1/1;
 }
@@ -13,17 +50,49 @@
 	width: 100%;
 	height: 100%;
 }
-#canvas-ctrl {
-	width: 350px;
-	height: 350px;
-}
 
+#canvas-ctrl {
+	position: absolute;
+	bottom: 30px;
+	right: 30px;
+	width: auto;
+	height: auto;
+	z-index: 3;
+	transform: translate(10%, 10%) scale(1);
+	border-radius: 3rem;
+	opacity: 0;
+	pointer-events: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px;
+	overflow: hidden;
+	transition: all 0.5s ease-in-out;
+}
+#canvas-ctrl.captured {
+	opacity: 1;
+	transform: translate(33%, 35%) scale(0.35);
+}
 #submit-style {
 	background-color: red;
 	height: 150px;
 	width: 150px;
 }
-/* #canvas-ctrl canvas {
-	width: 100%;
-	height: 100%;
-} */
+.vegetables {
+	list-style-type: none;
+	color: var(--slate-400);
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+.vegetables li {
+	font-size: 1.3rem;
+	background-color: #ffffff21;
+	padding: 0.5rem 1.5rem;
+	border-radius: 2rem;
+}
+@media screen and (min-width: 300px) and (max-width: 470px) {
+	#canvas-ctrl.captured {
+		transform: translate(33%, 35%) scale(0.35);
+	}
+}
