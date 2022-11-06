@@ -112,6 +112,7 @@ $(function () {
 			success: function (data) {
 				console.log("success");
 				const { msg } = data;
+				console.log(data);
 				if (msg === "Received") {
 					// load animation removed
 					loaderAnim.removeClass("loading");
