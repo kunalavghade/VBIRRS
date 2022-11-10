@@ -91,6 +91,7 @@
 	padding: 0.5rem 1.5rem;
 	border-radius: 2rem;
 }
+
 @media screen and (min-width: 300px) and (max-width: 470px) {
 	#canvas-ctrl.captured {
 		transform: translate(33%, 35%) scale(0.35);

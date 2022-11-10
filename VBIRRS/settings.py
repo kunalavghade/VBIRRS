@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-b!xlscswmf=6$&sa2kkff1)601m*7$wmjttt+=4zqqkj99w_$o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
