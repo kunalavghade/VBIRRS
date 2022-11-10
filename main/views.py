@@ -11,7 +11,7 @@ from urllib.request import urlopen
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 
-from .YoloDetect import detect
+from .YoloDetect import detect, detect_names
 from .fire import *
 
 
@@ -48,27 +48,26 @@ def signup(request):
                     phone=phone,
                     password=password,
                 ).save()
-                createuser(username)
+                createuser(userName)
                 return redirect("/login")
     form = Signup()
     return render(request, "signup.html", {"form": form})
 
 
-# @login_required(login_url="/login")
+@login_required(login_url="/login")
 def main(request):
     if request.method == "POST":
         image_path = request.POST["src"]
         path = default_storage.save(f'./Yolo/{request.user.username}.jpg', ContentFile(urlopen(image_path).read()))
-        veggies = detect(path)
+        veggies = detect_names(path)
         if default_storage.exists(path):
             default_storage.delete(path)
         time.sleep(1)
         return JsonResponse(
             {
                 "msg": "Received",
-                # "veggies": ["Cabbage", "Caulifloweer", "Onion", "Tomato", "Garlic"],
                 'veggies': veggies,
-                "recipe" : get_recipe(veggies)
+                "recipe" : {} # get_recipe(veggies)
             }
         )
     return render(request, "index.html")

@@ -81,7 +81,7 @@ def letterbox(
 def detect(path):
     veggies = []
     with torch.no_grad():
-        img0 = cv2.imread('./Yolo/Data.jpg')
+        img0 = cv2.imread('./Yolo/Data2.jpg')
         img = letterbox(img0, 640, stride=2)[0]
         img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
         img = np.ascontiguousarray(img)
@@ -95,17 +95,11 @@ def detect(path):
         pred = yolo(img, augment=False)[0]
 
         pred = non_max_suppression(pred, 0.25, 0.45, agnostic=False)
+        print(pred)
         t2 = time_synchronized()
         for i, det in enumerate(pred):
-            s = ""
-            s += "%gx%g " % img.shape[2:]  # print string
-            gn = torch.tensor(img0.shape)[[1, 0, 1, 0]]
             if len(det):
                 det[:, :4] = scale_coords(img.shape[2:], det[:, :4], img0.shape).round()
-
-            for c in det[:, -1].unique():
-                n = (det[:, -1] == c).sum()  # detections per class
-                s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
 
             for *xyxy, conf, cls in reversed(det):
                 if names[int(cls)] not in veggies:
@@ -114,4 +108,30 @@ def detect(path):
                 plot_one_box(xyxy, img0, label=label, line_thickness=1)
 
         cv2.imwrite("./Yolo/filename.jpg", img0)
+    return sorted(veggies)
+
+def detect_names(path):
+    veggies = []
+    with torch.no_grad():
+        img0 = cv2.imread('./Yolo/Data2.jpg')
+        img = letterbox(img0, 640, stride=2)[0]
+        img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
+        img = np.ascontiguousarray(img)
+        img = torch.from_numpy(img).to(device)
+        img = img.half() if half else img.float()  # uint8 to fp16/32
+        img /= 255.0  # 0 - 255 to 0.0 - 1.0
+        if img.ndimension() == 3:
+            img = img.unsqueeze(0)
+
+        t1 = time_synchronized()
+        pred = yolo(img, augment=False)[0]
+
+        pred = non_max_suppression(pred, 0.25, 0.45, agnostic=False)
+        
+        t2 = time_synchronized()
+        for i, det in enumerate(pred):
+            for *xyxy, conf, cls in reversed(det):
+                if names[int(cls)] not in veggies:
+                    veggies.append(names[int(cls)])
+
     return sorted(veggies)
