@@ -26,8 +26,8 @@ $(function () {
 	mobileCheck();
 
 	// Global ajax setup
-	const CANVAS_WIDTH = 865;
-	const CANVAS_HEIGHT = 540;
+	const CANVAS_WIDTH = 650;
+	const CANVAS_HEIGHT = 650;
 	const canvasCtrl = $("#canvas-ctrl");
 	$.ajaxSetup({
 		headers: {
@@ -54,7 +54,7 @@ $(function () {
 	$("#cambtn").on("click", function () {
 		navigator.mediaDevices
 			.getUserMedia({
-				video: { width: { ideal: 1920 } },
+				video: { width: { ideal: 1920 }},
 				audio: false,
 			})
 			.then((stream) => {

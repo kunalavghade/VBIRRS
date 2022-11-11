@@ -5,6 +5,7 @@ from django.contrib import messages
 from .forms import Signup, Login, ContactUsForm
 from .models import UserInfo, ContactUs
 from django.http import JsonResponse
+
 import time
 from urllib.request import urlopen
 from django.core.files.storage import default_storage
@@ -50,6 +51,7 @@ def signup(request):
                 return redirect("/login")
     form = Signup()
     return render(request, "signup.html", {"form": form})
+
 @login_required(login_url="/login")
 def main(request):
     if request.method == "POST":
@@ -60,12 +62,12 @@ def main(request):
         else:
             file = request.FILES["uploadfile"]
             path = default_storage.save(f'./Yolo/{request.user.username}-{datetime.now().strftime("%Y%m%d-%H%M%S")}.jpg', file)
+        veggies =[]
         if path is not None:
-            print(path)
             veggies = detect_names(path)
-        # if default_storage.exists(path):
-            # default_storage.delete(path)
-        time.sleep(10)
+            if default_storage.exists(path):
+                default_storage.delete(path)
+        # time.sleep(10)
         return JsonResponse(
             {
                 "msg": "Received",
@@ -101,7 +103,6 @@ def login(request):
 
 def about(request):
     return render(request, "about.html")
-
 
 def contact(request):
     if request.method == "POST":

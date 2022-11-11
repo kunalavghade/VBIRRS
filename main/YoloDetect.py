@@ -80,7 +80,8 @@ def letterbox(
 
 def detect(path):
     veggies = []
-    path = str(Path(__file__).parent.parent.joinpath("media/Yolo/"+Path(path).name))
+    # path = str(Path(__file__).parent.parent.joinpath("media/Yolo/"+Path(path).name))
+    print(path)
     with torch.no_grad():
         img0 = cv2.imread(path)
         img = letterbox(img0, 640, stride=2)[0]
@@ -124,10 +125,8 @@ def detect_names(path):
         img /= 255.0  # 0 - 255 to 0.0 - 1.0
         if img.ndimension() == 3:
             img = img.unsqueeze(0)
-
         t1 = time_synchronized()
         pred = yolo(img, augment=False)[0]
-
         pred = non_max_suppression(pred, 0.25, 0.45, agnostic=False)
         
         t2 = time_synchronized()
