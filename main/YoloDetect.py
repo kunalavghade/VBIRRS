@@ -7,10 +7,10 @@ import cv2
 import torch
 import numpy as np
 from numpy import random
-from models.experimental import attempt_load
-from utils.general import check_img_size, check_requirements, check_imshow, non_max_suppression, apply_classifier, \
+from Yolo.models.experimental import attempt_load
+from Yolo.utils.general import check_img_size, check_requirements, check_imshow, non_max_suppression, apply_classifier, \
     scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path
-from utils.plots import plot_one_box
+from Yolo.utils.plots import plot_one_box
 
 
 yolo = None

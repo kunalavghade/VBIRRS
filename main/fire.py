@@ -32,4 +32,5 @@ def get_recipe(veggies):
     for key in permute:
         if key in data:
             recipe.update(data[key])
+    print(recipe)
     return recipe
