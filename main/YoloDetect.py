@@ -80,8 +80,9 @@ def letterbox(
 
 def detect(path):
     veggies = []
+    path = str(Path(__file__).parent.parent.joinpath("media/Yolo/"+Path(path).name))
     with torch.no_grad():
-        img0 = cv2.imread('./Yolo/Data2.jpg')
+        img0 = cv2.imread(path)
         img = letterbox(img0, 640, stride=2)[0]
         img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
         img = np.ascontiguousarray(img)
@@ -112,8 +113,9 @@ def detect(path):
 
 def detect_names(path):
     veggies = []
+    path = str(Path(__file__).parent.parent.joinpath("media/Yolo/"+Path(path).name))
     with torch.no_grad():
-        img0 = cv2.imread('./Yolo/Data2.jpg')
+        img0 = cv2.imread(path)
         img = letterbox(img0, 640, stride=2)[0]
         img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
         img = np.ascontiguousarray(img)
@@ -133,5 +135,5 @@ def detect_names(path):
             for *xyxy, conf, cls in reversed(det):
                 if names[int(cls)] not in veggies:
                     veggies.append(names[int(cls)])
-
+    print(veggies)
     return sorted(veggies)

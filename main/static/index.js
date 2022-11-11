@@ -1,5 +1,8 @@
 // Jquery for convenience
 $(function () {
+	const titleTag = $("h1#title");
+	titleTag.text("Vegetables Detected");
+
 	const mobileCheck = function () {
 		let check = false;
 		(function (a) {
@@ -157,5 +160,40 @@ $(function () {
 		console.log(form);
 		console.log("Form Submitting..");
 		return false;
+	});
+	const obj = {
+		msg: "Received",
+		veggies: ["Green Chili", "Onion", "Potato", "Tomato", "cucumber"],
+		recipe: [
+			{ name: "bhuna pyaaz", tag: "spicy" },
+			{ name: "marmalade", tag: "sweet" },
+			{ name: "onion soup", tag: "soup" },
+			{ name: "pyaaz ka raita", tag: "spicy" },
+			{ name: "ringes", tag: "snack" },
+			{ name: "aloo mutter", tag: "spicy" },
+			{ name: "aloo posto", tag: "spicy" },
+			{ name: "aloo tikki", tag: "spicy" },
+			{ name: "dum aloo", tag: "spicy" },
+			{ name: "jeera aloo", tag: "spicy" },
+			{ name: "choka", tag: "spicy" },
+			{ name: "chutney", tag: "spicy" },
+			{ name: "curry", tag: "tangy" },
+			{ name: "sambar", tag: "spicy" },
+			{ name: "sauce", tag: "sweet" },
+			{ name: "chilled cucumber soup", tag: "soup" },
+			{ name: "salad", tag: "spicy" },
+		],
+	};
+	obj.recipe.forEach((recp) => {
+		console.log(recp);
+		$("#recipes").append(
+			`<li>
+			<h2 class="title">${recp.name}</h2>
+			<div class="tags">
+				<span class="tag">${recp.tag}</span>
+			</div>
+		</li>
+			`
+		);
 	});
 });
