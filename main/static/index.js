@@ -26,7 +26,7 @@ $(function () {
 	mobileCheck();
 
 	// Global ajax setup
-	const CANVAS_WIDTH = 650;
+	const CANVAS_WIDTH = 1080;
 	const CANVAS_HEIGHT = 650;
 	const canvasCtrl = $("#canvas-ctrl");
 	$.ajaxSetup({
@@ -161,6 +161,7 @@ $(function () {
 		console.log("Form Submitting..");
 		return false;
 	});
+	
 	const obj = {
 		msg: "Received",
 		veggies: ["Green Chili", "Onion", "Potato", "Tomato", "cucumber"],
@@ -184,6 +185,7 @@ $(function () {
 			{ name: "salad", tag: "spicy" },
 		],
 	};
+
 	obj.recipe.forEach((recp) => {
 		console.log(recp);
 		$("#recipes").append(

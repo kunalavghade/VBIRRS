@@ -58,10 +58,10 @@ def main(request):
         image_path = request.POST["src"]
         path = None
         if image_path != "":
-            path = default_storage.save(f'./Yolo/{request.user.username}-{datetime.now().strftime("%Y%m%d-%H%M%S")}.jpg', ContentFile(urlopen(image_path).read()))
+            path = default_storage.save(f'./Yolo/{request.user.username}.jpg', ContentFile(urlopen(image_path).read()))
         else:
             file = request.FILES["uploadfile"]
-            path = default_storage.save(f'./Yolo/{request.user.username}-{datetime.now().strftime("%Y%m%d-%H%M%S")}.jpg', file)
+            path = default_storage.save(f'./Yolo/{request.user.username}.jpg', file)
         veggies =[]
         if path is not None:
             veggies = detect_names(path)

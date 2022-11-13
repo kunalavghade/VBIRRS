@@ -42,5 +42,4 @@ def get_recipe(veggies):
         if k not in recipe:
             recipe[k] = []
         recipe[k].append(v)
-    print(recipe)
     return recipe
