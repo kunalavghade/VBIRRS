@@ -25,11 +25,21 @@ def get_recipe(veggies):
             if i+1<len(arr):
                 per(arr,tmp+arr[i]+'-', i+1)
     per(veggies,"", 0)
-    recipe = {}
+    
     data = db.reference('/Recipes').get()
+
     if data == None:
-        return recipe
+        return {}
+    
+    tmp = {}
     for key in permute:
         if key in data:
-            recipe.update(data[key])
+            tmp.update(data[key])
+
+    recipe = {}
+    while len(tmp) != 0:
+        v, k = tmp.popitem();
+        if k not in recipe:
+            recipe[k] = []
+        recipe[k].append(v)
     return recipe

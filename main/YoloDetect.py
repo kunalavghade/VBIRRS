@@ -7,10 +7,10 @@ import cv2
 import torch
 import numpy as np
 from numpy import random
-from models.experimental import attempt_load
-from utils.general import check_img_size, check_requirements, check_imshow, non_max_suppression, apply_classifier, \
+from Yolo.models.experimental import attempt_load
+from Yolo.utils.general import check_img_size, check_requirements, check_imshow, non_max_suppression, apply_classifier, \
     scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path
-from utils.plots import plot_one_box
+from Yolo.utils.plots import plot_one_box
 
 
 yolo = None
@@ -80,8 +80,12 @@ def letterbox(
 
 def detect(path):
     veggies = []
+    path = str(Path(__file__).parent.parent.joinpath("media/Yolo/"+Path(path).name))
     with torch.no_grad():
-        img0 = cv2.imread('./Yolo/Data2.jpg')
+        img0 = cv2.imread(path)
+        cx, cy = int(img0.shape[0]/2), int(img0.shape[1]/2) 
+        size = int(min(img0.shape[0], img0.shape[1])/2)
+        img0 = img0[cx-size : cx+size, cy-size : cy+size]
         img = letterbox(img0, 640, stride=2)[0]
         img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
         img = np.ascontiguousarray(img)
@@ -95,7 +99,6 @@ def detect(path):
         pred = yolo(img, augment=False)[0]
 
         pred = non_max_suppression(pred, 0.25, 0.45, agnostic=False)
-        print(pred)
         t2 = time_synchronized()
         for i, det in enumerate(pred):
             if len(det):
@@ -107,13 +110,17 @@ def detect(path):
                 label = f"{names[int(cls)]} {conf:.2f}"
                 plot_one_box(xyxy, img0, label=label, line_thickness=1)
 
-        cv2.imwrite("./Yolo/filename.jpg", img0)
+        cv2.imwrite("./Yolo/croped.jpg", img0)
     return sorted(veggies)
 
 def detect_names(path):
     veggies = []
+    path = str(Path(__file__).parent.parent.joinpath("media/Yolo/"+Path(path).name))
     with torch.no_grad():
-        img0 = cv2.imread('./Yolo/Data2.jpg')
+        img0 = cv2.imread(path)
+        cx, cy = int(img0.shape[0]/2), int(img0.shape[1]/2) 
+        size = int(min(img0.shape[0], img0.shape[1])/2)
+        img0 = img0[cx-size : cx+size, cy-size : cy+size]
         img = letterbox(img0, 640, stride=2)[0]
         img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
         img = np.ascontiguousarray(img)
@@ -122,10 +129,8 @@ def detect_names(path):
         img /= 255.0  # 0 - 255 to 0.0 - 1.0
         if img.ndimension() == 3:
             img = img.unsqueeze(0)
-
         t1 = time_synchronized()
         pred = yolo(img, augment=False)[0]
-
         pred = non_max_suppression(pred, 0.25, 0.45, agnostic=False)
         
         t2 = time_synchronized()
@@ -133,5 +138,4 @@ def detect_names(path):
             for *xyxy, conf, cls in reversed(det):
                 if names[int(cls)] not in veggies:
                     veggies.append(names[int(cls)])
-
     return sorted(veggies)
