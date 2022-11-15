@@ -16,6 +16,19 @@ def createuser(name):
     user_ref.update({name: ["None"]})
 
 
+def update_user(name, data):
+    user_ref = database.child("users")
+    pre = user_ref.child(name).get()
+    print(pre)
+    if pre is None:
+        return 
+    if pre == ['None']:
+        pre = [data]
+    elif data in pre:
+        pre.remove(data)
+    pre.insert(0,data)
+    user_ref.update({name: pre})
+
 def get_recipe(veggies):
     veggies = list(map(str.lower,veggies))
     permute = []

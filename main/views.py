@@ -57,17 +57,19 @@ def main(request):
     if request.method == "POST":
         image_path = request.POST["src"]
         path = None
+        
         if image_path != "":
             path = default_storage.save(f'./Yolo/{request.user.username}.jpg', ContentFile(urlopen(image_path).read()))
         else:
             file = request.FILES["uploadfile"]
             path = default_storage.save(f'./Yolo/{request.user.username}.jpg', file)
+        
         veggies =[]
         if path is not None:
             veggies = detect_names(path)
             if default_storage.exists(path):
                 default_storage.delete(path)
-        # time.sleep(10)
+
         return JsonResponse(
             {
                 "msg": "Received",
@@ -76,8 +78,13 @@ def main(request):
             }
         )
     return render(request, "index.html")
+
 @login_required(login_url="/login")
 def recipes(request, tag, rec_name):
+    username = None
+    if request.user.is_authenticated:
+        username = request.user.username
+    update_user(username, tag)
     return render(request, "recipes.html", {"tag": tag, "recipe_name": rec_name})
 
 def logout(request):
