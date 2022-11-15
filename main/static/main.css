@@ -95,14 +95,13 @@
 	width: 100%;
 	height: fit-content;
 	padding: 1rem 1.5rem;
-	display: flex;
-	gap: 1rem;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 270px));
+	grid-auto-columns: 270px;
+	gap: 10px;
 	list-style-type: none;
 }
-.recipes li {
+.recipes a {
 	position: relative;
 	border-radius: 0.7rem;
 	width: 100%;
@@ -112,34 +111,39 @@
 	transition: all 0.5s ease-in-out;
 	cursor: pointer;
 }
-.recipes li:hover {
+.recipes p {
+	font-size: 0.8rem;
+	color: var(--slate-600);
+	transition: color 0.5s 0.5s ease-in-out;
+}
+.recipes a:hover P {
+	color: var(--slate-400);
+}
+.recipes a:hover {
 	border-color: var(--slate-400);
 }
-.recipes li h2.title {
+.recipes a h2.title {
 	font-size: 1.5rem;
 	color: var(--slate-600);
 	transition: color 0.5s ease-in-out;
 }
-.recipes li:hover h2.title {
+.recipes a:hover h2.title {
 	color: var(--slate-400);
 }
-.recipes .tags {
-	margin-top: 20px;
+.tags {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
-	max-width: 50%;
 }
-.recipes .tags .tag {
-	padding: 0.1rem 1rem;
-	border-radius: 25px;
-	color: var(--slate-600);
-	transition: color 0.5s ease-in-out, border-color 0.5s ease-in-out;
+.tag {
+	width: fit-content;
+	padding: 0.7rem 1.2rem;
+	border-radius: 0.5rem;
 	border: 2px dashed var(--slate-700);
-}
-.recipes li:hover .tag {
 	color: var(--slate-400);
-	border-color: var(--slate-400);
+}
+.tag.active {
+	border-color: var(--slate-500);
 }
 @media screen and (min-width: 300px) and (max-width: 470px) {
 	#canvas-ctrl.captured {

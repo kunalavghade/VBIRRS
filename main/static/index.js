@@ -54,7 +54,7 @@ $(function () {
 	$("#cambtn").on("click", function () {
 		navigator.mediaDevices
 			.getUserMedia({
-				video: { width: { ideal: 1920 }},
+				video: { width: { ideal: 1920 } },
 				audio: false,
 			})
 			.then((stream) => {
@@ -137,6 +137,8 @@ $(function () {
 				// Load Animation on
 				loaderAnim.addClass("loading");
 				$("#resp li").remove("li");
+				$(".tags button").remove("button");
+				$("#recipes a").remove("a");
 			},
 			success: function (data) {
 				console.log("success");
@@ -146,7 +148,38 @@ $(function () {
 					// load animation removed
 					$("input[name='uploadfile']").val("");
 					loaderAnim.removeClass("loading");
-					const { veggies } = data;
+					const { veggies, recipe } = data;
+					const tags = Object.keys(recipe);
+					tags.forEach((tag) => {
+						recipe[tag].forEach((recp) => {
+							$("#recipes").append(
+								`<a href="/recipes/${tag}/${recp}"><h2 class="title">${recp}</h2>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt soluta expedita fugiat molestiae laboriosam dolores!</p>
+								</a>
+								`
+							);
+						});
+					});
+					tags.forEach((tag) => {
+						$(".tags").append(
+							`<button class='tag' data-tag="${tag}" >${tag}</button>`
+						);
+					});
+					$(".tag").on("click", function () {
+						$(".tag.active").removeClass("active");
+						$(this).addClass("active");
+						const tag = $(this).data("tag");
+						$("#recipes a").remove("a");
+						recipe[tag].forEach((recp) => {
+							$("#recipes").append(
+								`<a href="/recipes/${tag}/${recp}"><h2 class="title">${recp}</h2>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt soluta expedita fugiat molestiae laboriosam dolores!</p>
+								</a>
+								`
+							);
+						});
+					});
+
 					veggies.forEach((veg) => {
 						$("#resp").append(`<li>${veg}</li>`);
 					});
@@ -160,42 +193,5 @@ $(function () {
 		console.log(form);
 		console.log("Form Submitting..");
 		return false;
-	});
-	
-	const obj = {
-		msg: "Received",
-		veggies: ["Green Chili", "Onion", "Potato", "Tomato", "cucumber"],
-		recipe: [
-			{ name: "bhuna pyaaz", tag: "spicy" },
-			{ name: "marmalade", tag: "sweet" },
-			{ name: "onion soup", tag: "soup" },
-			{ name: "pyaaz ka raita", tag: "spicy" },
-			{ name: "ringes", tag: "snack" },
-			{ name: "aloo mutter", tag: "spicy" },
-			{ name: "aloo posto", tag: "spicy" },
-			{ name: "aloo tikki", tag: "spicy" },
-			{ name: "dum aloo", tag: "spicy" },
-			{ name: "jeera aloo", tag: "spicy" },
-			{ name: "choka", tag: "spicy" },
-			{ name: "chutney", tag: "spicy" },
-			{ name: "curry", tag: "tangy" },
-			{ name: "sambar", tag: "spicy" },
-			{ name: "sauce", tag: "sweet" },
-			{ name: "chilled cucumber soup", tag: "soup" },
-			{ name: "salad", tag: "spicy" },
-		],
-	};
-
-	obj.recipe.forEach((recp) => {
-		console.log(recp);
-		$("#recipes").append(
-			`<li>
-			<h2 class="title">${recp.name}</h2>
-			<div class="tags">
-				<span class="tag">${recp.tag}</span>
-			</div>
-		</li>
-			`
-		);
 	});
 });

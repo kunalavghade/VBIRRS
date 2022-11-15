@@ -3,8 +3,6 @@
 <link rel="stylesheet" href="{% static '/loader.css' %}" />
 <!-- <link rel="stylesheet" href="{% static 'styles/cam.css'%}" /> -->
 <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all"> -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="module" src="{% static 'index.js' %}"></script>
 {% endblock styles %} {% block views %}
 <h1 class="title">Home</h1>
 {% if user.is_authenticated %}
@@ -58,11 +56,7 @@
 </div>
 {% comment %} renderde list after ajax call {% endcomment %}
 <h1 id="title"></h1>
-<ul id="resp" class="vegetables mt-4">
-	<li>Cucumber</li>
-	<li>Capsicum</li>
-	<li>Tomato</li>
-	<li>Garlic</li>
-</ul>
+<ul id="resp" class="vegetables mt-4"></ul>
+<div class="tags"></div>
 <ul class="recipes" id="recipes"></ul>
 {% endif %} {% endblock views %}

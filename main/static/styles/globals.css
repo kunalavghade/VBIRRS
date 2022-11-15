@@ -45,6 +45,8 @@ input {
 	transition-duration: 0.5s;
 	transition-timing-function: ease-in-out;
 	font-size: 1.25rem;
+	border-top-left-radius: 0.5rem;
+	border-top-right-radius: 0.5rem;
 }
 textarea {
 	outline: none;

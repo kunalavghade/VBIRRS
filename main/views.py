@@ -76,7 +76,9 @@ def main(request):
             }
         )
     return render(request, "index.html")
-
+@login_required(login_url="/login")
+def recipes(request, tag, rec_name):
+    return render(request, "recipes.html", {"tag": tag, "recipe_name": rec_name})
 
 def logout(request):
     auth.logout(request)
