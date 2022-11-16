@@ -29,7 +29,7 @@ def update_user(name, data):
     pre.insert(0,data)
     user_ref.update({name: pre})
 
-def get_recipe(veggies):
+def get_recipe(veggies,name):
     veggies = list(map(str.lower,veggies))
     permute = []
     def per(arr, tmp, idx):
@@ -43,16 +43,33 @@ def get_recipe(veggies):
 
     if data == None:
         return {}
-    
+
     tmp = {}
     for key in permute:
         if key in data:
             tmp.update(data[key])
 
     recipe = {}
+
+    user_ref = database.child("users")
+    pre = user_ref.child(name).get()
+
+    if (pre is not None) and (pre != ['None']):
+        while pre :
+            recipe[pre.pop()] = []
+
     while len(tmp) != 0:
         v, k = tmp.popitem();
         if k not in recipe:
             recipe[k] = []
         recipe[k].append(v)
+
+    tmp = []
+    for k,v in recipe.items():
+        if not v:
+            tmp.append(k);
+
+    while tmp:
+        recipe.pop(tmp.pop())
+
     return recipe

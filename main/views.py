@@ -74,7 +74,7 @@ def main(request):
             {
                 "msg": "Received",
                 'veggies': veggies,
-                "recipe" : get_recipe(veggies)
+                "recipe" : get_recipe(veggies,request.user.username)
             }
         )
     return render(request, "index.html")
