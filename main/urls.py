@@ -10,5 +10,5 @@ urlpatterns = [
     path("contact", views.contact, name="contactus page"),
     path("about", views.about, name="about page"),
     path("logout", views.logout, name="logout page"),
-    path("recipes/<str:tag>/<str:rec_name>", views.recipes, name="Recipe Page")
+    path("recipes", views.recipes, name="Recipe Page")
 ]

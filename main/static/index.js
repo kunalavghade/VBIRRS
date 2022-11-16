@@ -118,6 +118,34 @@ $(function () {
 		}
 		return "";
 	}
+	const loadRecipe = function (evt) {
+		evt.preventDefault();
+		const tag = $(this).data("tag");
+		const recipe = $(this).data("recipe");
+		$.ajax({
+			url: "/recipes",
+			method: "POST",
+			data: JSON.stringify({
+				tag: tag,
+				recipe: recipe,
+			}),
+			success(resp, status) {
+				console.log(resp);
+			},
+		});
+	};
+	const loadAllTags = function (tags, recipe) {
+		tags.forEach((tag) => {
+			recipe[tag].forEach((recp) => {
+				$("#recipes").append(
+					`<a class="recipe" href="/recipes" data-tag="${tag}" data-recipe="${recp}"><h2 class="title">${recp}</h2>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt soluta expedita fugiat molestiae laboriosam dolores!</p>
+					</a>
+					`
+				);
+			});
+		});
+	};
 	$("form[name='inputForm']").on("submit", function (evt) {
 		evt.stopImmediatePropagation();
 		evt.preventDefault();
@@ -150,16 +178,8 @@ $(function () {
 					loaderAnim.removeClass("loading");
 					const { veggies, recipe } = data;
 					const tags = Object.keys(recipe);
-					tags.forEach((tag) => {
-						recipe[tag].forEach((recp) => {
-							$("#recipes").append(
-								`<a href="/recipes/${tag}/${recp}"><h2 class="title">${recp}</h2>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt soluta expedita fugiat molestiae laboriosam dolores!</p>
-								</a>
-								`
-							);
-						});
-					});
+					loadAllTags(tags, recipe);
+					$(".tags").append("<button class='tag' data-tag='all' >All</button>");
 					tags.forEach((tag) => {
 						$(".tags").append(
 							`<button class='tag' data-tag="${tag}" >${tag}</button>`
@@ -170,16 +190,19 @@ $(function () {
 						$(this).addClass("active");
 						const tag = $(this).data("tag");
 						$("#recipes a").remove("a");
-						recipe[tag].forEach((recp) => {
-							$("#recipes").append(
-								`<a href="/recipes/${tag}/${recp}"><h2 class="title">${recp}</h2>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt soluta expedita fugiat molestiae laboriosam dolores!</p>
-								</a>
-								`
-							);
-						});
+						if (tag !== "all") {
+							recipe[tag].forEach((recp) => {
+								$("#recipes").append(
+									`<a class="recipe" href="/recipes" data-tag="${tag}" data-recipe="${recp}" ><h2 class="title">${recp}</h2>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt soluta expedita fugiat molestiae laboriosam dolores!</p>
+									</a>
+									`
+								);
+							});
+							return;
+						}
+						loadAllTags(tags, recipe);
 					});
-
 					veggies.forEach((veg) => {
 						$("#resp").append(`<li>${veg}</li>`);
 					});
@@ -194,4 +217,5 @@ $(function () {
 		console.log("Form Submitting..");
 		return false;
 	});
+	$(document).on("click", ".recipe", loadRecipe);
 });

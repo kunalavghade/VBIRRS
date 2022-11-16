@@ -5,7 +5,7 @@ from django.contrib import messages
 from .forms import Signup, Login, ContactUsForm
 from .models import UserInfo, ContactUs
 from django.http import JsonResponse
-
+from json import loads
 import time
 from urllib.request import urlopen
 from django.core.files.storage import default_storage
@@ -80,12 +80,22 @@ def main(request):
     return render(request, "index.html")
 
 @login_required(login_url="/login")
+<<<<<<< HEAD
 def recipes(request, tag, rec_name):
     username = None
     if request.user.is_authenticated:
         username = request.user.username
     update_user(username, tag)
     return render(request, "recipes.html", {"tag": tag, "recipe_name": rec_name})
+=======
+def recipes(request):
+    if request.method == "POST":
+        data = request.body.decode('utf-8') 
+        json_data = loads(data)
+        # Return the json data to be given there from firebase for recipe
+        # Will Render the UI on main page
+        return JsonResponse({"msg": "Received", "loads" : json_data})
+>>>>>>> 917ed86 (New Changes)
 
 def logout(request):
     auth.logout(request)
