@@ -17,7 +17,7 @@ from datetime import datetime
 
 
 def index(request):
-    return render(request, "index.html", {"title": "Home"})
+    return render(request, "home.html", {"title": "Home"})
 
 
 def signup(request):
@@ -80,14 +80,6 @@ def main(request):
     return render(request, "index.html")
 
 @login_required(login_url="/login")
-<<<<<<< HEAD
-def recipes(request, tag, rec_name):
-    username = None
-    if request.user.is_authenticated:
-        username = request.user.username
-    update_user(username, tag)
-    return render(request, "recipes.html", {"tag": tag, "recipe_name": rec_name})
-=======
 def recipes(request):
     if request.method == "POST":
         data = request.body.decode('utf-8') 
@@ -95,7 +87,6 @@ def recipes(request):
         # Return the json data to be given there from firebase for recipe
         # Will Render the UI on main page
         return JsonResponse({"msg": "Received", "loads" : json_data})
->>>>>>> 917ed86 (New Changes)
 
 def logout(request):
     auth.logout(request)

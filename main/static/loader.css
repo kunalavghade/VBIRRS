@@ -12,6 +12,7 @@
 	transition-property: transform, backdrop-filter;
 	transition-duration: 0.5s;
 	transition-timing-function: ease-in-out;
+	z-index: 5;
 }
 .wrapper.loading {
 	transform: translateY(0%);

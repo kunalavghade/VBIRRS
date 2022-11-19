@@ -1,39 +1,54 @@
 {% extends 'base.html' %} {% block styles %} {% load static %}
 <link rel="stylesheet" href="{% static '/main.css'%}" />
 <link rel="stylesheet" href="{% static '/loader.css' %}" />
-<!-- <link rel="stylesheet" href="{% static 'styles/cam.css'%}" /> -->
-<!-- <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all"> -->
 {% endblock styles %} {% block views %}
-<h1 class="title">Home</h1>
+<h1 class="title">Recipes</h1>
 {% if user.is_authenticated %}
+<button id="drawer-open">
+	<i class="bi bi-caret-left"></i>
+</button>
+<div class="drawer px-4 py-3">
+	<button id="drawer-close">
+		<i class="bi bi-x-lg"></i>
+	</button>
+	<form
+		method="POST"
+		name="inputForm"
+		style="margin-top: 5rem"
+		enctype="multipart/form-data"
+	>
+		{% csrf_token %}
+		<button id="cambtn" type="button">Open Cam</button>
 
-<form method="POST" name="inputForm" enctype="multipart/form-data">
-	{% csrf_token %}
-	<button id="cambtn" type="button">Open Cam</button>
-
-	<button type="submit" class="button" id="submit">Submit</button>
-	<div class="video-wrapper">
-		<button type="button" class="iconbtn" style="color: white" id="capture">
-			<i class="bi bi-camera"></i>
-		</button>
-		<button type="button" class="iconbtn" id="stop">
-			<i class="bi bi-x-lg"></i>
-		</button>
-		<div id="video-ctrl">
-			<video></video>
-		</div>
-		<div id="canvas-ctrl"><canvas></canvas></div>
+		<button type="submit" class="button" id="submit">Submit</button>
+		<input id="webimg" value="" name="src" type="text" style="display: none" />
+		<div class="divider"></div>
+		<input
+			type="file"
+			class="my-5"
+			id="uploadfile"
+			name="uploadfile"
+			accept="image/*"
+		/>
+	</form>
+	<h1 id="title"></h1>
+	<ul id="resp" class="vegetables mt-4"></ul>
+	<div class="tags m-4"></div>
+	<ul class="recipes" id="recipes"></ul>
+</div>
+<div class="video-wrapper">
+	<button type="button" class="iconbtn" style="color: white" id="capture">
+		<i class="bi bi-camera"></i>
+	</button>
+	<button type="button" class="iconbtn" id="stop">
+		<i class="bi bi-x-lg"></i>
+	</button>
+	<div id="video-ctrl">
+		<video></video>
 	</div>
-	<input id="webimg" value="" name="src" type="text" style="display: none" />
-	<div class="divider"></div>
-	<input
-		type="file"
-		class="my-5"
-		id="uploadfile"
-		name="uploadfile"
-		accept="image/*"
-	/>
-</form>
+	<div id="canvas-ctrl"><canvas></canvas></div>
+</div>
+
 <div class="wrapper">
 	<div class="press">
 		<div class="holder"></div>
@@ -54,9 +69,5 @@
 		</div>
 	</div>
 </div>
-{% comment %} renderde list after ajax call {% endcomment %}
-<h1 id="title"></h1>
-<ul id="resp" class="vegetables mt-4"></ul>
-<div class="tags"></div>
-<ul class="recipes" id="recipes"></ul>
+
 {% endif %} {% endblock views %}

@@ -1,4 +1,27 @@
 // Jquery for convenience
+const test = {
+	msg: "Received",
+	veggies: ["Green Chili", "Onion", "Potato", "Tomato", "cucumber"],
+	recipe: {
+		spicy: [
+			"salad",
+			"sambar",
+			"chutney",
+			"choka",
+			"jeera aloo",
+			"dum aloo",
+			"aloo tikki",
+			"aloo posto",
+			"aloo mutter",
+			"pyaaz ka raita",
+			"bhuna pyaaz",
+		],
+		soup: ["chilled cucumber soup", "onion soup"],
+		sweet: ["sauce", "marmalade"],
+		tangy: ["curry"],
+		snack: ["ringes"],
+	},
+};
 $(function () {
 	const titleTag = $("h1#title");
 	titleTag.text("Vegetables Detected");
@@ -218,4 +241,47 @@ $(function () {
 		return false;
 	});
 	$(document).on("click", ".recipe", loadRecipe);
+	const tempLoad = () => {
+		console.log("ran");
+		$("#resp li").remove("li");
+		$(".tags button").remove("button");
+		$("#recipes a").remove("a");
+		const { recipe, veggies } = test;
+		const tags = Object.keys(recipe);
+		loadAllTags(tags, recipe);
+		$(".tags").append("<button class='tag' data-tag='all' >All</button>");
+		tags.forEach((tag) => {
+			$(".tags").append(
+				`<button class='tag' data-tag="${tag}" >${tag}</button>`
+			);
+		});
+		$(".tag").on("click", function () {
+			$(".tag.active").removeClass("active");
+			$(this).addClass("active");
+			const tag = $(this).data("tag");
+			$("#recipes a").remove("a");
+			if (tag !== "all") {
+				recipe[tag].forEach((recp) => {
+					$("#recipes").append(
+						`<a class="recipe" href="/recipes" data-tag="${tag}" data-recipe="${recp}" ><h2 class="title">${recp}</h2>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt soluta expedita fugiat molestiae laboriosam dolores!</p>
+									</a>
+									`
+					);
+				});
+				return;
+			}
+			loadAllTags(tags, recipe);
+		});
+		veggies.forEach((veg) => {
+			$("#resp").append(`<li>${veg}</li>`);
+		});
+	};
+	// tempLoad();
+	$("#drawer-open").on("click", function () {
+		$(".drawer").addClass("open");
+	});
+	$("#drawer-close").on("click", function () {
+		$(".drawer").removeClass("open");
+	});
 });
