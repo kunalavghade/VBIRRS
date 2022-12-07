@@ -23,7 +23,7 @@ def update_user(name, data):
     if pre is None:
         return 
     if pre == ['None']:
-        pre = [data]
+        pre = []
     elif data in pre:
         pre.remove(data)
     pre.insert(0,data)

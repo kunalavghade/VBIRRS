@@ -86,6 +86,8 @@ def recipes(request):
         json_data = loads(data)
         # Return the json data to be given there from firebase for recipe
         # Will Render the UI on main page
+        # (request.user.username)
+        update_user(request.user.username, json_data['tag'])
         return JsonResponse({"msg": "Received", "loads" : json_data})
 
 def logout(request):

@@ -152,8 +152,15 @@ $(function () {
 				tag: tag,
 				recipe: recipe,
 			}),
+			beforeSend() {
+				$("#recp-name").text("");
+			},
 			success(resp, status) {
-				console.log(resp);
+				const { msg } = resp;
+				if (msg === "Received") {
+					const { recipe } = resp.loads;
+					$("#recp-name").text(recipe);
+				}
 			},
 		});
 	};
