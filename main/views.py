@@ -88,7 +88,8 @@ def recipes(request):
         # Will Render the UI on main page
         # (request.user.username)
         update_user(request.user.username, json_data['tag'])
-        return JsonResponse({"msg": "Received", "loads" : json_data})
+        # print(json_data)
+        return JsonResponse({"msg": "Received", "loads" : json_data, 'recipe' : get_food(json_data['recipe'])})
 
 def logout(request):
     auth.logout(request)

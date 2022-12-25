@@ -29,6 +29,17 @@ def update_user(name, data):
     user_ref.update({name: pre})
 
 
+def get_food(name):
+    name =  'test1'
+    v = database.child(f'food/{name}/views').get()
+
+    database.child(f'food/{name}/').update({
+        'views' : v+1
+        })
+
+    return database.child(f'food/{name}/').get()
+
+
 def get_recipe(veggies, name):
     veggies = list(map(str.lower, veggies))
     permute = []
