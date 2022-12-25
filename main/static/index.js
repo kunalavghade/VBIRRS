@@ -302,4 +302,35 @@ $(function () {
 	$("#drawer-close").on("click", function () {
 		$(".drawer").removeClass("open");
 	});
+	// const recipeTL = gsap.timeline({ defaults: { ease: "power1.inOut" } });
+	// recipeTL
+	// 	.fromTo(
+	// 		".process",
+	// 		{ x: 100, autoAlpha: 0 },
+	// 		{ x: 0, autoAlpha: 1, duration: 0.5, stagger: 0.5 }
+	// 	)
+
+	const processRest = (jqNodeList, mode) => {
+		$.each(jqNodeList, (idx, el) => {
+			if (mode) {
+				if (!mode && $(el).hasClass("complete")) {
+					return;
+				}
+				$(el).addClass("complete");
+				$(el).children('input[type="checkbox"]').prop("checked", mode);
+			} else {
+				$(el).removeClass("complete");
+				$(el).children('input[type="checkbox"]').prop("checked", mode);
+			}
+		});
+	};
+	$(".process input[type='checkbox']").on("change", function (evt) {
+		if ($(this).is(":checked")) {
+			$(this).parent().addClass("complete");
+			processRest($(this).parent().prevAll(), true);
+		} else {
+			$(this).parent().removeClass("complete");
+			processRest($(this).parent().nextAll(), false);
+		}
+	});
 });
