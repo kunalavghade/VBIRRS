@@ -201,13 +201,20 @@ $(function () {
 			beforeSend() {
 				$("#recp-name").text("");
 				$("#howTo").text("");
+				$("#number").text("");
 				$("#recp-name~p.rec-info").html("");
+				$("#recipe-procedure-details").removeClass("show");
+
 				processTag.empty();
 			},
 			success(resp, status) {
 				const { msg } = resp;
 				if (msg === "Received") {
 					const { recipe } = resp;
+					if (recipe === null) {
+						showAlert("info", "Database doesn't have the recipe.");
+						return;
+					}
 					showAlert("ok", ` ${recipe.name} recipe loaded!`);
 					$("#recp-name").text(recipe.name);
 					const steps = recipe.procedure
@@ -216,7 +223,7 @@ $(function () {
 							return step !== "";
 						});
 					$("#howTo").text("Steps to prepare " + recipe.name);
-
+					$("#number").text(recipe.views);
 					$("#recp-name~p.rec-info").html("&emsp;&emsp;" + recipe.info);
 
 					steps.forEach((step) => {
@@ -224,6 +231,7 @@ $(function () {
 							`<li class="process"><input class="form-check-input bg-dark" type="checkbox" value="" /><p class="process-text">${step}</p></li>`
 						);
 					});
+					$("#recipe-procedure-details").addClass("show");
 				}
 			},
 		});

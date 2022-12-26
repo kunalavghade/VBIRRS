@@ -30,14 +30,13 @@ def update_user(name, data):
 
 
 def get_food(name):
-    name =  'test1'
-    v = database.child(f'food/{name}/views').get()
+    # name = "test1"s
+    v = database.child(f"food/{name}/views").get()
+    if v is None:
+        return None
+    database.child(f"food/{name}/").update({"views": v + 1})
 
-    database.child(f'food/{name}/').update({
-        'views' : v+1
-        })
-
-    return database.child(f'food/{name}/').get()
+    return database.child(f"food/{name}/").get()
 
 
 def get_recipe(veggies, name):
