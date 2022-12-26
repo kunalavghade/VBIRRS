@@ -185,6 +185,8 @@ $(function () {
 		}
 		return "";
 	}
+	const processTag = $("#process-steps");
+
 	const loadRecipe = function (evt) {
 		evt.preventDefault();
 		const tag = $(this).data("tag");
@@ -198,13 +200,30 @@ $(function () {
 			}),
 			beforeSend() {
 				$("#recp-name").text("");
+				$("#howTo").text("");
+				$("#recp-name~p.rec-info").html("");
+				processTag.empty();
 			},
 			success(resp, status) {
 				const { msg } = resp;
 				if (msg === "Received") {
-					const { recipe } = resp.loads;
-					showAlert("ok", ` ${recipe} recipe loaded!`);
-					$("#recp-name").text(recipe);
+					const { recipe } = resp;
+					showAlert("ok", ` ${recipe.name} recipe loaded!`);
+					$("#recp-name").text(recipe.name);
+					const steps = recipe.procedure
+						.split(/Step\s?\d+\s?\.\s?/)
+						.filter((step) => {
+							return step !== "";
+						});
+					$("#howTo").text("Steps to prepare " + recipe.name);
+
+					$("#recp-name~p.rec-info").html("&emsp;&emsp;" + recipe.info);
+
+					steps.forEach((step) => {
+						processTag.append(
+							`<li class="process"><input class="form-check-input bg-dark" type="checkbox" value="" /><p class="process-text">${step}</p></li>`
+						);
+					});
 				}
 			},
 		});
@@ -324,7 +343,7 @@ $(function () {
 			}
 		});
 	};
-	$(".process input[type='checkbox']").on("change", function (evt) {
+	$(document).on("change", ".process input[type='checkbox']", function (evt) {
 		if ($(this).is(":checked")) {
 			$(this).parent().addClass("complete");
 			processRest($(this).parent().prevAll(), true);

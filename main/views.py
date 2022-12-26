@@ -52,19 +52,22 @@ def signup(request):
     form = Signup()
     return render(request, "signup.html", {"form": form})
 
+
 @login_required(login_url="/login")
 def main(request):
     if request.method == "POST":
         image_path = request.POST["src"]
         path = None
-        
         if image_path != "":
-            path = default_storage.save(f'./Yolo/{request.user.username}.jpg', ContentFile(urlopen(image_path).read()))
+            path = default_storage.save(
+                f"./Yolo/{request.user.username}.jpg",
+                ContentFile(urlopen(image_path).read()),
+            )
         else:
             file = request.FILES["uploadfile"]
-            path = default_storage.save(f'./Yolo/{request.user.username}.jpg', file)
-        
-        veggies =[]
+            path = default_storage.save(f"./Yolo/{request.user.username}.jpg", file)
+
+        veggies = []
         if path is not None:
             veggies = detect_names(path)
             if default_storage.exists(path):
@@ -73,23 +76,31 @@ def main(request):
         return JsonResponse(
             {
                 "msg": "Received",
-                'veggies': veggies,
-                "recipe" : get_recipe(veggies,request.user.username)
+                "veggies": veggies,
+                "recipe": get_recipe(veggies, request.user.username),
             }
         )
     return render(request, "index.html")
 
+
 @login_required(login_url="/login")
 def recipes(request):
     if request.method == "POST":
-        data = request.body.decode('utf-8') 
+        data = request.body.decode("utf-8")
         json_data = loads(data)
         # Return the json data to be given there from firebase for recipe
         # Will Render the UI on main page
         # (request.user.username)
-        update_user(request.user.username, json_data['tag'])
+        update_user(request.user.username, json_data["tag"])
         # print(json_data)
-        return JsonResponse({"msg": "Received", "loads" : json_data, 'recipe' : get_food(json_data['recipe'])})
+        return JsonResponse(
+            {
+                "msg": "Received",
+                # "loads": json_data,
+                "recipe": get_food(json_data["recipe"]),
+            }
+        )
+
 
 def logout(request):
     auth.logout(request)
@@ -116,6 +127,7 @@ def login(request):
 
 def about(request):
     return render(request, "about.html")
+
 
 def contact(request):
     if request.method == "POST":

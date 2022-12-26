@@ -1,3 +1,51 @@
-{% extends 'base.html' %} {% block views %}
+{% extends 'base.html' %} {% block styles %} {% load static %}
+<link rel="stylesheet" href="{% static '/home.css'%}" />
+{% endblock styles %} {% block views %}
 <h1 class="title">Home</h1>
+
+<h1>Get curated recipes faster</h1>
+<div class="card my-5 bg-dark">
+	<div class="row g-0">
+		<div class="col-md-4">
+			<img
+				src="{% static '/recipe.jpg' %}"
+				class="img-fluid rounded-start"
+				alt="..."
+			/>
+		</div>
+		<div class="col-md-8" style="font-size: 1.2rem">
+			<div class="card-body">
+				<h2 class="card-title">Easy to use</h2>
+				<p class="card-text">Simple Steps</p>
+				<ol class="my-4">
+					<li>Upload Images</li>
+					<li>Our system will detect recipes</li>
+					<li>Cook the recipe and enjoy</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="card my-5 bg-dark">
+	<div class="row g-0">
+		<div class="col-md-4">
+			<img
+				src="{% static '/recipe2.jpg' %}"
+				class="img-fluid rounded-start"
+				alt="..."
+			/>
+		</div>
+		<div class="col-md-8" style="font-size: 1.2rem">
+			<div class="card-body">
+				<h2 class="card-title">Focused on efficiency</h2>
+				<p class="card-text">
+					We have made it easy for you to interact with the website
+				</p>
+				<p class="card-text">
+					Simple UI, more development efforts lesser user critics
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock views %}
