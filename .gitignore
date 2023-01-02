@@ -10,3 +10,4 @@ migrations
 .env-write.json
 .DS_Store
 # *.pt
+._*
